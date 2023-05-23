@@ -9,3 +9,4 @@ cmdOptionConfigs:
   paramLabel: MaxLength
   type: java.lang.Long
   processorType: com.lumera.wordsearch.processor.MaxLengthProcessor
+  description: Max length of the words
