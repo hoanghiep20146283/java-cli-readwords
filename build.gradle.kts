@@ -39,3 +39,11 @@ application {
     // Define the main class for the application.
     mainClass.set("com.lumera.wordsearch.WordSearchApplication")
 }
+
+tasks.register<Copy>("copyRuntimeLibs") {
+    from(configurations.runtimeClasspath.get())
+    into(layout.buildDirectory.dir("lib"))
+
+    from(layout.buildDirectory.dir("libs"))
+    into(layout.buildDirectory.dir("lib"))
+}
