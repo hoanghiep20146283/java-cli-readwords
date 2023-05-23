@@ -1,5 +1,6 @@
 package com.lumera.wordsearch.config;
 
+import com.lumera.wordsearch.constant.ProcessorType;
 import java.io.Serializable;
 import java.util.List;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class XmlConfig implements Serializable {
     private String paramLabel;
     private String description;
     private String type;
-    private String processorType;
+    private ProcessorType processorType;
+
   }
 }

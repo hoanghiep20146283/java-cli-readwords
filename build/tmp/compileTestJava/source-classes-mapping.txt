@@ -1,0 +1,2 @@
+com/lumera/wordsearch/SomethingTest.java
+ com.lumera.wordsearch.SomethingTest
