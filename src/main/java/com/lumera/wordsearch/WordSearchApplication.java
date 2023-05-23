@@ -15,11 +15,6 @@ import picocli.CommandLine.Model.OptionSpec;
  * Entry point of application.
  */
 public class WordSearchApplication {
-//    public static void main(String[] args) {
-//        var words = readWordList("wordlist.txt");
-//        // ToDo: implement more
-//    }-
-
   public static XmlConfig xmlConfig;
 
   public static void main(String[] args) {
