@@ -1,4 +1,0 @@
-com/lumera/wordsearch/WordSearchApplication.java
- com.lumera.wordsearch.WordSearchApplication
-com/lumera/wordsearch/command/SearchCommand.java
- com.lumera.wordsearch.command.SearchCommand

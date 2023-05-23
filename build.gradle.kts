@@ -33,6 +33,15 @@ dependencies {
 
     // https://mvnrepository.com/artifact/info.picocli/picocli
     implementation("info.picocli:picocli:4.7.3")
+
+    // https://mvnrepository.com/artifact/org.yaml/snakeyaml
+    implementation("org.yaml:snakeyaml:1.8")
+
+    // lombok
+    compileOnly("org.projectlombok:lombok:1.18.26")
+    annotationProcessor("org.projectlombok:lombok:1.18.26")
+    testCompileOnly("org.projectlombok:lombok:1.18.26")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.26")
 }
 
 application {
@@ -46,4 +55,8 @@ tasks.register<Copy>("copyRuntimeLibs") {
 
     from(layout.buildDirectory.dir("libs"))
     into(layout.buildDirectory.dir("lib"))
+}
+
+tasks.named("build") {
+    finalizedBy("copyRuntimeLibs")
 }
