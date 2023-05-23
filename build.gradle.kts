@@ -32,10 +32,10 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 
     // https://mvnrepository.com/artifact/info.picocli/picocli
-    implementation group: 'info.picocli', name: 'picocli', version: '4.7.3'
+    implementation("info.picocli:picocli:4.7.3")
 }
 
 application {
     // Define the main class for the application.
-    mainClassName = "com.lumera.wordsearch.WordSearchApplication"
+    mainClass.set("com.lumera.wordsearch.WordSearchApplication")
 }
