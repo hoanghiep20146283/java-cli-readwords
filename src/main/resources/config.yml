@@ -10,3 +10,9 @@ cmdOptionConfigs:
   type: java.lang.Long
   processorType: MAXLENGTH
   description: Max length of the words
+
+- name: minlength
+  paramLabel: MinLength
+  type: java.lang.Long
+  processorType: MINLENGTH
+  description: Min length of the words

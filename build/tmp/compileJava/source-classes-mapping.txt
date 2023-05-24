@@ -1,7 +1,7 @@
 com/lumera/wordsearch/exception/FileInputInvalidException.java
  com.lumera.wordsearch.exception.FileInputInvalidException
-com/lumera/wordsearch/processor/MaxLengthProcessor.java
- com.lumera.wordsearch.processor.MaxLengthProcessor
+com/lumera/wordsearch/WordSearchApplication.java
+ com.lumera.wordsearch.WordSearchApplication
 com/lumera/wordsearch/constant/ProcessorType.java
  com.lumera.wordsearch.constant.ProcessorType
 com/lumera/wordsearch/exception/ProcessorNotFoundException.java
@@ -11,7 +11,9 @@ com/lumera/wordsearch/config/XmlConfig.java
  com.lumera.wordsearch.config.XmlConfig$CmdOptionConfig
 com/lumera/wordsearch/processor/Processor.java
  com.lumera.wordsearch.processor.Processor
-com/lumera/wordsearch/WordSearchApplication.java
- com.lumera.wordsearch.WordSearchApplication
+com/lumera/wordsearch/processor/MinLengthProcessor.java
+ com.lumera.wordsearch.processor.MinLengthProcessor
+com/lumera/wordsearch/processor/MaxLengthProcessor.java
+ com.lumera.wordsearch.processor.MaxLengthProcessor
 com/lumera/wordsearch/command/SearchCommand.java
  com.lumera.wordsearch.command.SearchCommand

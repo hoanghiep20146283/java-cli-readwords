@@ -5,6 +5,7 @@ import com.lumera.wordsearch.config.XmlConfig.CmdOptionConfig;
 import com.lumera.wordsearch.constant.ProcessorType;
 import com.lumera.wordsearch.exception.FileInputInvalidException;
 import com.lumera.wordsearch.processor.MaxLengthProcessor;
+import com.lumera.wordsearch.processor.MinLengthProcessor;
 import com.lumera.wordsearch.processor.Processor;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -28,6 +29,7 @@ public class SearchCommand {
   static {
     // add processors to map (prototype pattern)
     processorTypeMap.put(ProcessorType.MAXLENGTH, new MaxLengthProcessor());
+    processorTypeMap.put(ProcessorType.MINLENGTH, new MinLengthProcessor());
   }
 
   public static int run(ParseResult parseResult) {
