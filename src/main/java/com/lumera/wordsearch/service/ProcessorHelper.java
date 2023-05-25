@@ -4,15 +4,41 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.lumera.wordsearch.constant.ProcessorType;
 import com.lumera.wordsearch.constant.WordClass;
+import com.lumera.wordsearch.processor.ClasifyProcessor;
+import com.lumera.wordsearch.processor.ContainsOnlyProcessor;
 import com.lumera.wordsearch.processor.EndsWithProcessor;
 import com.lumera.wordsearch.processor.MaxLengthProcessor;
 import com.lumera.wordsearch.processor.MinLengthProcessor;
+import com.lumera.wordsearch.processor.Processor;
 import com.lumera.wordsearch.processor.StartsWithProcessor;
+import java.util.EnumMap;
 import javax.annotation.CheckForNull;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ProcessorHelper {
+
+  public static final EnumMap<ProcessorType, Processor> processorTypeMap = new EnumMap<>(
+      ProcessorType.class);
+
+  public static final EnumMap<ProcessorType, Class> defaultValueMap = new EnumMap<>(
+      ProcessorType.class);
+
+  static {
+    // add processors to map (prototype pattern)
+    processorTypeMap.put(ProcessorType.MAXLENGTH, new MaxLengthProcessor());
+    processorTypeMap.put(ProcessorType.MINLENGTH, new MinLengthProcessor());
+    processorTypeMap.put(ProcessorType.STARTSWITH, new StartsWithProcessor());
+    processorTypeMap.put(ProcessorType.ENDSWITH, new EndsWithProcessor());
+    processorTypeMap.put(ProcessorType.CONTAINSONLY, new ContainsOnlyProcessor());
+    processorTypeMap.put(ProcessorType.CLASS, new ClasifyProcessor());
+    defaultValueMap.put(ProcessorType.MAXLENGTH, Long.class);
+    defaultValueMap.put(ProcessorType.MINLENGTH, Long.class);
+    defaultValueMap.put(ProcessorType.STARTSWITH, String.class);
+    defaultValueMap.put(ProcessorType.ENDSWITH, String.class);
+    defaultValueMap.put(ProcessorType.CONTAINSONLY, String.class);
+    defaultValueMap.put(ProcessorType.CLASS, WordClass.class);
+  }
 
   /**
    * Returns the default value of {@code type} as defined by JLS --- <br>

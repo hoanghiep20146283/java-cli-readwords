@@ -2,23 +2,13 @@ package com.lumera.wordsearch.command;
 
 import com.lumera.wordsearch.WordSearchApplication;
 import com.lumera.wordsearch.config.XmlConfig.CmdOptionConfig;
-import com.lumera.wordsearch.constant.ProcessorType;
-import com.lumera.wordsearch.constant.WordClass;
 import com.lumera.wordsearch.exception.FileInputInvalidException;
-import com.lumera.wordsearch.processor.ClasifyProcessor;
-import com.lumera.wordsearch.processor.ContainsOnlyProcessor;
-import com.lumera.wordsearch.processor.EndsWithProcessor;
-import com.lumera.wordsearch.processor.MaxLengthProcessor;
-import com.lumera.wordsearch.processor.MinLengthProcessor;
-import com.lumera.wordsearch.processor.Processor;
-import com.lumera.wordsearch.processor.StartsWithProcessor;
 import com.lumera.wordsearch.service.ProcessorHelper;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -31,28 +21,6 @@ import picocli.CommandLine.ParseResult;
 
 @Command(name = "search", version = "1.0.0", description = "Searching for matching words", mixinStandardHelpOptions = true, header = "Search command", optionListHeading = "%nOptions are: %n")
 public final class SearchCommand {
-
-  public static final EnumMap<ProcessorType, Processor> processorTypeMap = new EnumMap<>(
-      ProcessorType.class);
-
-  public static final EnumMap<ProcessorType, Class> defaultValueMap = new EnumMap<>(
-      ProcessorType.class);
-
-  static {
-    // add processors to map (prototype pattern)
-    processorTypeMap.put(ProcessorType.MAXLENGTH, new MaxLengthProcessor());
-    processorTypeMap.put(ProcessorType.MINLENGTH, new MinLengthProcessor());
-    processorTypeMap.put(ProcessorType.STARTSWITH, new StartsWithProcessor());
-    processorTypeMap.put(ProcessorType.ENDSWITH, new EndsWithProcessor());
-    processorTypeMap.put(ProcessorType.CONTAINSONLY, new ContainsOnlyProcessor());
-    processorTypeMap.put(ProcessorType.CLASS, new ClasifyProcessor());
-    defaultValueMap.put(ProcessorType.MAXLENGTH, Long.class);
-    defaultValueMap.put(ProcessorType.MINLENGTH, Long.class);
-    defaultValueMap.put(ProcessorType.STARTSWITH, String.class);
-    defaultValueMap.put(ProcessorType.ENDSWITH, String.class);
-    defaultValueMap.put(ProcessorType.CONTAINSONLY, String.class);
-    defaultValueMap.put(ProcessorType.CLASS, WordClass.class);
-  }
 
   private SearchCommand() {
   }
@@ -101,11 +69,13 @@ public final class SearchCommand {
       List<CmdOptionConfig> matchedCmdOptionConfigs) {
 
     final Set<String> matchedElements = new HashSet<>(
-        processorTypeMap.get(matchedCmdOptionConfigs.get(0).getProcessorType()).search(word));
+        ProcessorHelper.processorTypeMap.get(matchedCmdOptionConfigs.get(0).getProcessorType())
+            .search(word));
 
     for (int i = 1; i < matchedCmdOptionConfigs.size(); i++) {
       matchedElements.retainAll(
-          processorTypeMap.get(matchedCmdOptionConfigs.get(i).getProcessorType()).search(word));
+          ProcessorHelper.processorTypeMap.get(matchedCmdOptionConfigs.get(i).getProcessorType())
+              .search(word));
     }
     return new ArrayList<>(matchedElements);
   }
@@ -115,9 +85,9 @@ public final class SearchCommand {
     cmdOptionConfigs.forEach(cmdOptionConfig -> Optional.ofNullable(
             parseResult.matchedOptionValue(cmdOptionConfig.getName(),
                 ProcessorHelper.getProcessorDefaultValue(cmdOptionConfig.getProcessorType(),
-                    defaultValueMap.get(cmdOptionConfig.getProcessorType()))))
+                    ProcessorHelper.defaultValueMap.get(cmdOptionConfig.getProcessorType()))))
         .ifPresent(optionValue ->
-            processorTypeMap
+            ProcessorHelper.processorTypeMap
                 .get(cmdOptionConfig.getProcessorType())
                 .setOptionValue(optionValue)
         ));
