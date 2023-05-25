@@ -1,11 +1,14 @@
 package com.lumera.wordsearch.processor;
 
+import com.lumera.wordsearch.constant.WordClass;
 import com.lumera.wordsearch.constant.WordClassOptions;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
+import org.jetbrains.annotations.NotNull;
 
 public class ClasifyProcessor extends Processor<WordClassOptions> {
 
@@ -23,36 +26,46 @@ public class ClasifyProcessor extends Processor<WordClassOptions> {
   public List<String> search(String word) {
     HashSet<String> matchedWords = new HashSet<>();
     optionValue.getWordClasss()
-        .forEach(wordClass -> {
-          switch (wordClass) {
-            case isogram: {
-              if (hasDuplicateCharacters(word)) {
-                matchedWords.add(word);
-              }
-              break;
-            }
-            case palindrome: {
-              if (isPalindrome(word)) {
-                matchedWords.add(word);
-              }
-              break;
-            }
-            case semordnilap: {
-              String reversedWord = new StringBuilder(word).reverse().toString();
-              if (filteredWord.contains(reversedWord)) {
-                filteredWord.add(word);
-                matchedWords.add(word);
-                matchedWords.add(reversedWord);
-              } else {
-                filteredWord.add(word);
-              }
-              break;
-            }
-            default:
-              matchedWords.add(word);
-          }
-        });
+        .forEach(processWordClass(word, matchedWords));
     return new ArrayList<>(matchedWords);
+  }
+
+  @NotNull
+  private Consumer<WordClass> processWordClass(String word, HashSet<String> matchedWords) {
+    return wordClass -> {
+      switch (wordClass) {
+        case isogram: {
+          if (hasDuplicateCharacters(word)) {
+            matchedWords.add(word);
+          }
+          break;
+        }
+        case palindrome: {
+          if (isPalindrome(word)) {
+            matchedWords.add(word);
+          }
+          break;
+        }
+        case semordnilap: {
+          processSemordnilapWord(word, matchedWords);
+          break;
+        }
+        default:
+          matchedWords.add(word);
+      }
+    };
+  }
+
+  private void processSemordnilapWord(String word, HashSet<String> matchedWords) {
+    String reversedWord = new StringBuilder(word).reverse().toString();
+    if (filteredWord.contains(reversedWord)) {
+      filteredWord.add(word);
+      matchedWords.add(word);
+      matchedWords.add(reversedWord);
+    } else {
+      filteredWord.add(word);
+    }
+    return;
   }
 
 
