@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,7 +35,7 @@ public final class SearchCommand {
     // implement the search logic
 
     // Read Options from command line
-    setOptions(parseResult);
+    ProcessorHelper.setOptions(parseResult);
     final List<String> matchedOptionNames = parseResult.matchedOptions().stream()
         .flatMap(optionSpec -> Arrays.stream(optionSpec.names())).collect(Collectors.toList());
     final List<CmdOptionConfig> matchedCmdOptionConfigs = WordSearchApplication.xmlConfig.getCmdOptionConfigs()
@@ -78,19 +77,6 @@ public final class SearchCommand {
               .search(word));
     }
     return new ArrayList<>(matchedElements);
-  }
-
-  private static void setOptions(ParseResult parseResult) {
-    final List<CmdOptionConfig> cmdOptionConfigs = WordSearchApplication.xmlConfig.getCmdOptionConfigs();
-    cmdOptionConfigs.forEach(cmdOptionConfig -> Optional.ofNullable(
-            parseResult.matchedOptionValue(cmdOptionConfig.getName(),
-                ProcessorHelper.getProcessorDefaultValue(cmdOptionConfig.getProcessorType(),
-                    ProcessorHelper.defaultValueMap.get(cmdOptionConfig.getProcessorType()))))
-        .ifPresent(optionValue ->
-            ProcessorHelper.processorTypeMap
-                .get(cmdOptionConfig.getProcessorType())
-                .setOptionValue(optionValue)
-        ));
   }
 }
 
