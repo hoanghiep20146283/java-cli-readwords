@@ -45,7 +45,6 @@ public class ClasifyProcessor extends Processor<WordClassOptions> {
                 matchedWords.add(reversedWord);
               } else {
                 filteredWord.add(word);
-                matchedWords.add(word);
               }
               break;
             }
