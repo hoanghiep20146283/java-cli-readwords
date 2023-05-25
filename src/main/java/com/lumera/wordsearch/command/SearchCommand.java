@@ -65,7 +65,8 @@ public class SearchCommand {
     }
 
     // implement the search logic
-    // Read thourgh input file
+
+    // Read Options from command line
     setOptions(parseResult);
     List<String> matchedOptionNames = parseResult.matchedOptions().stream()
         .flatMap(optionSpec -> Arrays.stream(optionSpec.names())).collect(Collectors.toList());
@@ -73,6 +74,7 @@ public class SearchCommand {
         .stream().filter(cmdOptionConfig -> matchedOptionNames.contains(cmdOptionConfig.getName()))
         .collect(Collectors.toList());
 
+    // Read thourgh input file
     String inputFileName = parseResult.matchedOptionValue("file", "wordlist.txt");
 
     try (FileInputStream inputStream = new FileInputStream(inputFileName); Scanner sc = new Scanner(
@@ -84,6 +86,8 @@ public class SearchCommand {
           matchingWords.addAll(matchedWords);
         }
       }
+
+      // Print out the result
       System.out.println("Matching words: " + matchingWords.size());
       matchingWords.forEach(word -> System.out.print(word + ", "));
     } catch (IOException ex) {
