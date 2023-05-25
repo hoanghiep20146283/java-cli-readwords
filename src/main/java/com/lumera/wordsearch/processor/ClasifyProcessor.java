@@ -53,6 +53,18 @@ public class ClasifyProcessor extends Processor<WordClassOptions> {
    *             is a repeated character, we return true and we're done. If there are no repeated
    *             characters, we return false after traversing the entire string
    *             </p>
+   *             <p>
+   *             Time complexity: traverse the input string once to count the number of occurrences
+   *             of each character. Therefore, traversing the entire string takes O(N) time. Then
+   *             iterate through the count array (size 256) to check if there are any repeating
+   *             characters. Iterating over the count array has a complexity of O(1) because the
+   *             array size is fixed (256 elements). So the total time complexity is O(N).
+   *             </p>
+   *             <p>
+   *             Space complexity: use a fixed array (size 256) to store the number of occurrences
+   *             of each character in the string. The count array size is fixed (independent of
+   *             string length). So the space complexity is O(1).
+   *             </p>
    * @return {@code true} if word does not contain any duplicated characters, otherwise
    * {@code false}
    */
@@ -71,8 +83,8 @@ public class ClasifyProcessor extends Processor<WordClassOptions> {
   /**
    * Check if the word read backwards is the same
    *
-   * @param word the word read from input file.
-   * The solution below has a time complexity of O(N/2) where N is the length of the word
+   * @param word the word read from input file. <br> The solution below has a time complexity of
+   *             O(N/2) where N is the length of the word
    * @return {@code true} if word read backwards is the same, otherwise {@code false}
    */
   public boolean isPalindrome(String word) {
