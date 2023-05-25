@@ -1,7 +1,5 @@
 package com.lumera.wordsearch.command;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import com.lumera.wordsearch.WordSearchApplication;
 import com.lumera.wordsearch.config.XmlConfig.CmdOptionConfig;
 import com.lumera.wordsearch.constant.ProcessorType;
@@ -14,6 +12,7 @@ import com.lumera.wordsearch.processor.MaxLengthProcessor;
 import com.lumera.wordsearch.processor.MinLengthProcessor;
 import com.lumera.wordsearch.processor.Processor;
 import com.lumera.wordsearch.processor.StartsWithProcessor;
+import com.lumera.wordsearch.service.ProcessorHelper;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -26,7 +25,6 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.annotation.CheckForNull;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.ParseResult;
@@ -116,49 +114,13 @@ public final class SearchCommand {
     final List<CmdOptionConfig> cmdOptionConfigs = WordSearchApplication.xmlConfig.getCmdOptionConfigs();
     cmdOptionConfigs.forEach(cmdOptionConfig -> Optional.ofNullable(
             parseResult.matchedOptionValue(cmdOptionConfig.getName(),
-                getProcessorDefaultValue(cmdOptionConfig.getProcessorType(),
+                ProcessorHelper.getProcessorDefaultValue(cmdOptionConfig.getProcessorType(),
                     defaultValueMap.get(cmdOptionConfig.getProcessorType()))))
         .ifPresent(optionValue ->
             processorTypeMap
                 .get(cmdOptionConfig.getProcessorType())
                 .setOptionValue(optionValue)
         ));
-  }
-
-  /**
-   * Returns the default value of {@code type} as defined by JLS --- <br>
-   * {@code 0x7fffffffffffffffL (Long.MAX_VALUE)} for
-   * {@link MaxLengthProcessor MaxLengthProcessor} <br> {@code 0L}
-   * for {@link MinLengthProcessor MinLengthProcessor} <br>
-   * {@code false} for {@link  Boolean Boolean} <br> {@code empty } for
-   * {@link StartsWithProcessor StartsWithProcessor} and
-   * {@link EndsWithProcessor EndsWithProcessor} <br> For other
-   * types and {@code void}, {@code null} is returned.
-   */
-  @SuppressWarnings("unchecked")
-  @CheckForNull
-  public static <T> T getProcessorDefaultValue(ProcessorType processorType, Class<T> type) {
-    checkNotNull(type);
-    if (type == Boolean.class) {
-      return (T) Boolean.FALSE;
-    }
-    if (type == Integer.class) {
-      return (T) Integer.valueOf(0);
-    }
-    if (type == Long.class) {
-      if (processorType == ProcessorType.MAXLENGTH) {
-        return (T) Long.valueOf(Long.MAX_VALUE);
-      } else {
-        return (T) Long.valueOf(0L);
-      }
-    }
-    if (type == String.class) {
-      return (T) "";
-    }
-    if (type == WordClass.class) {
-      return (T) WordClass.all;
-    }
-    return null;
   }
 }
 
