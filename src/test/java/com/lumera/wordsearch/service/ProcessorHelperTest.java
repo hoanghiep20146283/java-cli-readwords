@@ -169,8 +169,7 @@ public class ProcessorHelperTest {
     WordSearchApplication.xmlConfig = xmlConfig;
 
     Mockito.when(
-            parseResult.matchedOptionValue(ArgumentMatchers.anyString(),
-                ArgumentMatchers.any(WordClassOptions.class)))
+            parseResult.matchedOptionValue(ArgumentMatchers.anyString(), ArgumentMatchers.any()))
         .thenReturn(new WordClassOptions(Collections.singletonList(WordClass.semordnilap)));
 
     ProcessorHelper.setOptions(parseResult);
