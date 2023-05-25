@@ -29,11 +29,13 @@ public class ClasifyProcessor extends Processor<WordClassOptions> {
               if (hasDuplicateCharacters(word)) {
                 matchedWords.add(word);
               }
+              break;
             }
             case palindrome: {
               if (isPalindrome(word)) {
                 matchedWords.add(word);
               }
+              break;
             }
             case semordnilap: {
               String reversedWord = new StringBuilder(word).reverse().toString();
@@ -45,6 +47,7 @@ public class ClasifyProcessor extends Processor<WordClassOptions> {
                 filteredWord.add(word);
                 matchedWords.add(word);
               }
+              break;
             }
             default:
               matchedWords.add(word);
