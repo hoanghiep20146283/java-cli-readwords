@@ -1,5 +1,7 @@
 package com.lumera.wordsearch.command;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.lumera.wordsearch.WordSearchApplication;
 import com.lumera.wordsearch.config.XmlConfig.CmdOptionConfig;
 import com.lumera.wordsearch.constant.ProcessorType;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
+import javax.annotation.CheckForNull;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.ParseResult;
@@ -26,10 +29,15 @@ public class SearchCommand {
   public static EnumMap<ProcessorType, Processor> processorTypeMap = new EnumMap<>(
       ProcessorType.class);
 
+  public static EnumMap<ProcessorType, Class> defaultValueMap = new EnumMap<>(
+      ProcessorType.class);
+
   static {
     // add processors to map (prototype pattern)
     processorTypeMap.put(ProcessorType.MAXLENGTH, new MaxLengthProcessor());
     processorTypeMap.put(ProcessorType.MINLENGTH, new MinLengthProcessor());
+    defaultValueMap.put(ProcessorType.MAXLENGTH, Long.class);
+    defaultValueMap.put(ProcessorType.MINLENGTH, Long.class);
   }
 
   public static int run(ParseResult parseResult) {
@@ -63,12 +71,37 @@ public class SearchCommand {
     List<CmdOptionConfig> cmdOptionConfigs = WordSearchApplication.xmlConfig.getCmdOptionConfigs();
     return cmdOptionConfigs.stream().allMatch(cmdOptionConfig ->
         Optional.ofNullable(
-                parseResult.matchedOptionValue(cmdOptionConfig.getName(), null))
+                parseResult.matchedOptionValue(cmdOptionConfig.getName(),
+                    getProcessorDefaultValue(cmdOptionConfig.getProcessorType(),
+                        defaultValueMap.get(cmdOptionConfig.getProcessorType()))))
             .map(option ->
                 processorTypeMap
                     .get(cmdOptionConfig.getProcessorType())
                     .search(option, word)
             ).orElse(true)
     );
+  }
+
+  /**
+   * Returns the default value of {@code type} as defined by JLS --- {@code 0} for numbers,
+   * {@code false} for {@code boolean} and {@code '\0'} for {@code char}. For non-primitive types
+   * and {@code void}, {@code null} is returned.
+   */
+  @SuppressWarnings("unchecked")
+  @CheckForNull
+  public static <T> T getProcessorDefaultValue(ProcessorType processorType, Class<T> type) {
+    checkNotNull(type);
+    if (type == Boolean.class) {
+      return (T) Boolean.FALSE;
+    } else if (type == Integer.class) {
+      return (T) Integer.valueOf(0);
+    } else if (type == Long.class) {
+      if (processorType == ProcessorType.MAXLENGTH) {
+        return (T) Long.valueOf(Long.MAX_VALUE);
+      } else {
+        return (T) Long.valueOf(0L);
+      }
+    }
+    return null;
   }
 }

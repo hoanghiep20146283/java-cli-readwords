@@ -42,6 +42,10 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.26")
     testCompileOnly("org.projectlombok:lombok:1.18.26")
     testAnnotationProcessor("org.projectlombok:lombok:1.18.26")
+
+    //guava for type-safe
+    implementation("com.google.guava:guava:31.1-jre")
+
 }
 
 application {
