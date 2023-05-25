@@ -19,6 +19,10 @@ public class ContainsOnlyProcessor extends Processor<String> {
 
   @Override
   public List<String> search(String word) {
+    if (word == null || word.isEmpty()) {
+      return Collections.emptyList();
+    }
+
     boolean isMatch = true;
     for (char c : word.toCharArray()) {
       if (!inputChars.contains(c)) {
