@@ -23,6 +23,11 @@ import picocli.CommandLine.Model.OptionSpec;
  * prints the stack trace of the exception and returns an exit code. This can be customized by
  * configuring an {@link  IExecutionExceptionHandler},
  * </p>
+ * <p>
+ * Extensibility: We can configure, add or remove the list of processors (corresponding to the
+ * command list) used in the program in the file:
+ * <a href="file:../resources/config.yml">resources/config.yml</a>
+ * </p>
  */
 @Slf4j
 public final class WordSearchApplication {
