@@ -16,22 +16,22 @@ import picocli.CommandLine.Model.OptionSpec;
 /**
  * Entry point of application.
  */
-public class WordSearchApplication {
+public final class WordSearchApplication {
 
   public static XmlConfig xmlConfig;
 
   public static void main(String[] args) {
     try (InputStream inputStream = WordSearchApplication.class.getClassLoader()
         .getResourceAsStream("config.yml")) {
-      Yaml yaml = new Yaml(new Constructor(XmlConfig.class));
+      final Yaml yaml = new Yaml(new Constructor(XmlConfig.class));
       xmlConfig = (XmlConfig) yaml.load(inputStream);
 
-      CommandSpec spec = CommandSpec.create();
+      final CommandSpec spec = CommandSpec.create();
       spec.mixinStandardHelpOptions(true);
+      spec.name("search");
 
       for (CmdOptionConfig cmdOptionConfig : xmlConfig.getCmdOptionConfigs()) {
-        OptionSpec.Builder optionSpecBuilder = OptionSpec.builder(cmdOptionConfig.getName())
-
+        final OptionSpec.Builder optionSpecBuilder = OptionSpec.builder(cmdOptionConfig.getName())
             .paramLabel(cmdOptionConfig.getParamLabel())
             .type(Class.forName(cmdOptionConfig.getType()))
             .description(cmdOptionConfig.getDescription());
@@ -43,15 +43,15 @@ public class WordSearchApplication {
         spec.addOption(optionSpecBuilder.build());
       }
 
-      CommandLine commandLine = new CommandLine(spec);
+      final CommandLine commandLine = new CommandLine(spec);
       // set an execution strategy (the run(ParseResult) method) that will be called
       // by CommandLine.execute(args) when user input was valid
       commandLine.setExecutionStrategy(SearchCommand::run);
-      int exitCode = commandLine.execute(args);
+      final int exitCode = commandLine.execute(args);
       System.exit(exitCode);
     } catch (ClassNotFoundException | IOException | InstantiationException |
              IllegalAccessException | InvocationTargetException ex) {
-      ex.printStackTrace();
+      // TODO: logging
     }
   }
 }

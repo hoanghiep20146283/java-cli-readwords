@@ -43,9 +43,23 @@ dependencies {
     testCompileOnly("org.projectlombok:lombok:1.18.26")
     testAnnotationProcessor("org.projectlombok:lombok:1.18.26")
 
-    //guava for type-safe
+    // guava for type-safe
     implementation("com.google.guava:guava:31.1-jre")
 
+    // logging
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
+    implementation("org.slf4j:slf4j-api:1.7.25")
+    implementation("org.slf4j:slf4j-log4j12:1.7.25")
+}
+
+val deleteLogFiles by tasks.registering {
+    doLast {
+        delete(files("${project.rootDir}/logs"))
+    }
+}
+
+tasks.named("clean") {
+    dependsOn("deleteLogFiles")
 }
 
 application {

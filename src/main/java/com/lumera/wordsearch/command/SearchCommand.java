@@ -15,10 +15,11 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
-import picocli.CommandLine;
+import lombok.extern.slf4j.Slf4j;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.ParseResult;
 
+@Slf4j
 @Command(name = "search", version = "1.0.0", description = "Searching for matching words", mixinStandardHelpOptions = true, header = "Search command", optionListHeading = "%nOptions are: %n")
 public final class SearchCommand {
 
@@ -39,7 +40,7 @@ public final class SearchCommand {
         .collect(Collectors.toList());
 
     // Read thourgh input file
-    final String inputFileName = parseResult.matchedOptionValue("file", "wordlist.txt");
+    final String inputFileName = parseResult.matchedOptionValue("file", "wordlist1.txt");
 
     try (FileInputStream inputStream = new FileInputStream(inputFileName); Scanner sc = new Scanner(
         inputStream, StandardCharsets.UTF_8)) {
@@ -54,7 +55,8 @@ public final class SearchCommand {
       // Print out the result
       System.out.println("Matching words: " + matchingWords.size());
     } catch (IOException ex) {
-      throw new FileInputInvalidException(ex);
+      System.out.println("Error when reading input file!");
+      log.error(ex.getMessage(), ex);
     }
     return 1;
   }

@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import javax.annotation.CheckForNull;
 import lombok.experimental.UtilityClass;
+import org.apache.log4j.BasicConfigurator;
 import picocli.CommandLine.ParseResult;
 
 @UtilityClass
@@ -30,6 +31,8 @@ public class ProcessorHelper {
       ProcessorType.class);
 
   static {
+    // Log4j config
+    BasicConfigurator.configure();
     // add processors to map (prototype pattern)
     processorTypeMap.put(ProcessorType.MAXLENGTH, new MaxLengthProcessor());
     processorTypeMap.put(ProcessorType.MINLENGTH, new MinLengthProcessor());
