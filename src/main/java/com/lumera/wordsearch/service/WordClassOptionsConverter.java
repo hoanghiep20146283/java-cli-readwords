@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import picocli.CommandLine.ITypeConverter;
 import picocli.CommandLine.TypeConversionException;
 
-public class WordClassConverter implements ITypeConverter<WordClassOptions> {
+public class WordClassOptionsConverter implements ITypeConverter<WordClassOptions> {
 
   /**
    * Validate and convert a string to an object containing a list of WordClasses

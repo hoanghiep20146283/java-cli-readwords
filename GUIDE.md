@@ -9,4 +9,4 @@ When add a new rule and implement the logic of that new rule, follow these steps
 ## Scripts
 
 - Generated in ${project.rootDir}/build/scripts
-- Example: ./build/scripts
+- Example:  .\build\scripts\WordSearch class="{isogram""|"palindrome"}""" maxlength=100

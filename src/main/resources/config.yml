@@ -37,7 +37,7 @@ cmdOptionConfigs:
 
 - name: class
   paramLabel: Class
-  type: com.lumera.wordsearch.constant.WordClass
+  type: com.lumera.wordsearch.constant.WordClassOptions
   processorType: CLASS
   description: Class of word
-  converterType: com.lumera.wordsearch.service.WordClassConverter
+  converterType: com.lumera.wordsearch.service.WordClassOptionsConverter
