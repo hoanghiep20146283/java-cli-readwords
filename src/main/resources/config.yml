@@ -35,3 +35,8 @@ cmdOptionConfigs:
   processorType: CONTAINSONLY
   description: words are only made up of characters in the input string
 
+- name: class
+  paramLabel: Class
+  type: com.lumera.wordsearch.constant.WordClass
+  processorType: CLASS
+  description: Class of word
