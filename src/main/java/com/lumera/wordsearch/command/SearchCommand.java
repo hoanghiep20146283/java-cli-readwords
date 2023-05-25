@@ -42,7 +42,7 @@ public final class SearchCommand {
         .collect(Collectors.toList());
 
     // Read thourgh input file
-    final String inputFileName = parseResult.matchedOptionValue("file", "wordlist1.txt");
+    final String inputFileName = parseResult.matchedOptionValue("file", "wordlist.txt");
 
     try (FileInputStream inputStream = new FileInputStream(inputFileName); Scanner sc = new Scanner(
         inputStream, StandardCharsets.UTF_8)) {
