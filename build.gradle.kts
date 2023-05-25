@@ -47,9 +47,21 @@ dependencies {
     implementation("com.google.guava:guava:31.1-jre")
 
     // logging
-    // https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
     implementation("org.slf4j:slf4j-api:1.7.25")
     implementation("org.slf4j:slf4j-log4j12:1.7.25")
+
+    //testing
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.0")
+}
+
+tasks.named<Test>("test") {
+    useJUnitPlatform()
+
+    maxHeapSize = "1G"
+
+    testLogging {
+        events("passed")
+    }
 }
 
 val deleteLogFiles by tasks.registering {
