@@ -1,16 +1,17 @@
 package com.lumera.wordsearch.processor;
 
-import com.lumera.wordsearch.constant.WordClass;
 import com.lumera.wordsearch.constant.WordClassOptions;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Predicate;
 
 public class ClasifyProcessor extends Processor<WordClassOptions> {
 
-  private final List<String> result = new ArrayList<>();
+  private final Set<String> filteredWord = new HashSet<>();
 
   /**
-   * Check if the word belongs to one of the word classifications listed in the input parameter
+   * Check if the word belongs to one of the word classifications listed in the input parameter <br>
+   * So combine the classifications using: {@link  java.util.stream.Stream#anyMatch(Predicate)}
    *
    * @param word the word read from input file.
    * @return {@code true} if the word belongs to one of the word classifications listed in the input
@@ -29,7 +30,14 @@ public class ClasifyProcessor extends Processor<WordClassOptions> {
               return isPalindrome(word);
             }
             case semordnilap: {
-
+              String reversedWord = new StringBuilder(word).reverse().toString();
+              if (filteredWord.contains(reversedWord)) {
+                filteredWord.add(word);
+                return true;
+              } else {
+                filteredWord.add(word);
+                return false;
+              }
             }
             default:
               return true;
