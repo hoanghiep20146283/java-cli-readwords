@@ -3,19 +3,29 @@ package com.lumera.wordsearch;
 import com.lumera.wordsearch.command.SearchCommand;
 import com.lumera.wordsearch.config.XmlConfig;
 import com.lumera.wordsearch.config.XmlConfig.CmdOptionConfig;
+import com.lumera.wordsearch.service.PrintExceptionMessageHandler;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import lombok.extern.slf4j.Slf4j;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 import picocli.CommandLine;
+import picocli.CommandLine.IExecutionExceptionHandler;
 import picocli.CommandLine.ITypeConverter;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Model.OptionSpec;
+import picocli.CommandLine.ParameterException;
 
 /**
  * Entry point of application.
+ * <p>
+ * Exception handling: If the business logic of the command throws an exception, the execute method
+ * prints the stack trace of the exception and returns an exit code. This can be customized by
+ * configuring an {@link  IExecutionExceptionHandler},
+ * </p>
  */
+@Slf4j
 public final class WordSearchApplication {
 
   public static XmlConfig xmlConfig;
@@ -44,14 +54,25 @@ public final class WordSearchApplication {
       }
 
       final CommandLine commandLine = new CommandLine(spec);
+
       // set an execution strategy (the run(ParseResult) method) that will be called
       // by CommandLine.execute(args) when user input was valid
       commandLine.setExecutionStrategy(SearchCommand::run);
+
+      commandLine.setExecutionExceptionHandler(new PrintExceptionMessageHandler());
       final int exitCode = commandLine.execute(args);
       System.exit(exitCode);
-    } catch (ClassNotFoundException | IOException | InstantiationException |
-             IllegalAccessException | InvocationTargetException ex) {
-      // TODO: logging
+      // Exception handling: Print to the console error messages, not the entire stack trace
+    } catch (IOException | InstantiationException | IllegalAccessException ex) {
+      log.error(ex.getMessage(), ex);
+      System.out.println("Error when reading input file: " + ex.getMessage());
+    } catch (ClassNotFoundException | InvocationTargetException typeException) {
+      log.error(typeException.getMessage(), typeException);
+      System.out.println(
+          "ProcessorType or Option Data Type is misconfigured: " + typeException.getMessage());
+    } catch (Exception exception) {
+      log.error(exception.getMessage(), exception);
+      System.out.println("Unknown exception: " + exception.getMessage());
     }
   }
 }

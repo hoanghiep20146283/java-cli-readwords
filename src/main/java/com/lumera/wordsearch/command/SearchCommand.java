@@ -3,6 +3,7 @@ package com.lumera.wordsearch.command;
 import com.lumera.wordsearch.WordSearchApplication;
 import com.lumera.wordsearch.config.XmlConfig.CmdOptionConfig;
 import com.lumera.wordsearch.exception.FileInputInvalidException;
+import com.lumera.wordsearch.exception.ProcessorNotFoundException;
 import com.lumera.wordsearch.service.ProcessorHelper;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import picocli.CommandLine.Command;
@@ -55,7 +57,8 @@ public final class SearchCommand {
       // Print out the result
       System.out.println("Matching words: " + matchingWords.size());
     } catch (IOException ex) {
-      System.out.println("Error when reading input file!");
+      // Print to the console error messages, not the entire stack trace
+      System.out.println("Error when reading input file: " + ex.getMessage());
       log.error(ex.getMessage(), ex);
     }
     return 1;
