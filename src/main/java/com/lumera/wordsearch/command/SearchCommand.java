@@ -9,6 +9,7 @@ import com.lumera.wordsearch.exception.FileInputInvalidException;
 import com.lumera.wordsearch.processor.MaxLengthProcessor;
 import com.lumera.wordsearch.processor.MinLengthProcessor;
 import com.lumera.wordsearch.processor.Processor;
+import com.lumera.wordsearch.processor.StartsWithProcessor;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -36,8 +37,10 @@ public class SearchCommand {
     // add processors to map (prototype pattern)
     processorTypeMap.put(ProcessorType.MAXLENGTH, new MaxLengthProcessor());
     processorTypeMap.put(ProcessorType.MINLENGTH, new MinLengthProcessor());
+    processorTypeMap.put(ProcessorType.STARTSWITH, new StartsWithProcessor());
     defaultValueMap.put(ProcessorType.MAXLENGTH, Long.class);
     defaultValueMap.put(ProcessorType.MINLENGTH, Long.class);
+    defaultValueMap.put(ProcessorType.STARTSWITH, String.class);
   }
 
   public static int run(ParseResult parseResult) {
@@ -83,9 +86,14 @@ public class SearchCommand {
   }
 
   /**
-   * Returns the default value of {@code type} as defined by JLS --- {@code 0} for numbers,
-   * {@code false} for {@code boolean} and {@code '\0'} for {@code char}. For non-primitive types
-   * and {@code void}, {@code null} is returned.
+   * Returns the default value of {@code type} as defined by JLS --- <br>
+   * {@code 0x7fffffffffffffffL (Long.MAX_VALUE)} for
+   * {@link com.lumera.wordsearch.processor.MaxLengthProcessor MaxLengthProcessor} <br> {@code 0L}
+   * for {@link com.lumera.wordsearch.processor.MinLengthProcessor MinLengthProcessor} <br>
+   * {@code false} for {@link  java.lang.Boolean Boolean} <br> {@code empty } for
+   * {@link com.lumera.wordsearch.processor.StartsWithProcessor StartsWithProcessor} and
+   * {@link com.lumera.wordsearch.processor.EndsWithProcessor EndsWithProcessor} <br> For other
+   * types and {@code void}, {@code null} is returned.
    */
   @SuppressWarnings("unchecked")
   @CheckForNull
@@ -101,6 +109,8 @@ public class SearchCommand {
       } else {
         return (T) Long.valueOf(0L);
       }
+    } else if (type == String.class) {
+      return (T) "";
     }
     return null;
   }
