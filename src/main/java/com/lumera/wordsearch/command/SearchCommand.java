@@ -28,7 +28,7 @@ public final class SearchCommand {
   public static int run(ParseResult parseResult) {
     final Set<String> matchingWords = new HashSet<>();
 
-    // implement the search logic
+    // Implement the search logic
 
     // Read Options from command line
     ProcessorHelper.setOptions(parseResult);
@@ -53,7 +53,6 @@ public final class SearchCommand {
 
       // Print out the result
       System.out.println("Matching words: " + matchingWords.size());
-      matchingWords.forEach(word -> System.out.print(word + ", "));
     } catch (IOException ex) {
       throw new FileInputInvalidException(ex);
     }
