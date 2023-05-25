@@ -16,7 +16,7 @@ public class WordClassConverter implements ITypeConverter<WordClassOptions> {
       return new WordClassOptions(Collections.singletonList(WordClass.valueOf(classArgument)));
     } else if (classArgument.startsWith("{") && classArgument.endsWith("}")) {
       return new WordClassOptions(
-          Arrays.stream(classArgument.substring(1, classArgument.length() - 2)
+          Arrays.stream(classArgument.substring(1, classArgument.length() - 1)
                   .split("\\|"))
               .map(WordClass::valueOf)
               .collect(Collectors.toList()));

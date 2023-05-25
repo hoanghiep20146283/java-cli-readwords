@@ -2,5 +2,5 @@ package com.lumera.wordsearch.constant;
 
 public enum WordClass {
 
-  isogram, palindrome, semordnila, all
+  isogram, palindrome, semordnilap, all
 }

@@ -37,7 +37,7 @@ public class ClasifyProcessor extends Processor<WordClassOptions> {
               }
               break;
             }
-            case semordnila: {
+            case semordnilap: {
               String reversedWord = new StringBuilder(word).reverse().toString();
               if (filteredWord.contains(reversedWord)) {
                 filteredWord.add(word);

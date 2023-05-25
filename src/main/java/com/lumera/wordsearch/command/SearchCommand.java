@@ -85,7 +85,7 @@ public class SearchCommand {
         }
       }
       System.out.println("Matching words: " + matchingWords.size());
-      matchingWords.forEach(System.out::println);
+      matchingWords.forEach(word -> System.out.print(word + ", "));
     } catch (IOException ex) {
       throw new FileInputInvalidException(ex);
     }
