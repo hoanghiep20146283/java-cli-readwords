@@ -24,7 +24,7 @@ public class ClasifyProcessor extends Processor<WordClassOptions> {
    */
   @Override
   public List<String> search(String word) {
-    HashSet<String> matchedWords = new HashSet<>();
+    final HashSet<String> matchedWords = new HashSet<>();
     optionValue.getWordClasss()
         .forEach(processWordClass(word, matchedWords));
     return new ArrayList<>(matchedWords);
@@ -57,7 +57,7 @@ public class ClasifyProcessor extends Processor<WordClassOptions> {
   }
 
   private void processSemordnilapWord(String word, HashSet<String> matchedWords) {
-    String reversedWord = new StringBuilder(word).reverse().toString();
+    final String reversedWord = new StringBuilder(word).reverse().toString();
     if (filteredWord.contains(reversedWord)) {
       filteredWord.add(word);
       matchedWords.add(word);
@@ -65,7 +65,6 @@ public class ClasifyProcessor extends Processor<WordClassOptions> {
     } else {
       filteredWord.add(word);
     }
-    return;
   }
 
 
@@ -100,7 +99,7 @@ public class ClasifyProcessor extends Processor<WordClassOptions> {
    * {@code false}
    */
   public boolean hasDuplicateCharacters(String word) {
-    int[] charCount = new int[128]; //
+    final int[] charCount = new int[128]; //
 
     for (char c : word.toCharArray()) {
       if (++charCount[c] > 1) {
@@ -119,7 +118,7 @@ public class ClasifyProcessor extends Processor<WordClassOptions> {
    * @return {@code true} if word read backwards is the same, otherwise {@code false}
    */
   public boolean isPalindrome(String word) {
-    String reversedWord = new StringBuilder(word).reverse().toString();
+    final String reversedWord = new StringBuilder(word).reverse().toString();
     return word.equals(reversedWord);
   }
 }
