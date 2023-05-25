@@ -29,3 +29,9 @@ cmdOptionConfigs:
   processorType: ENDSWITH
   description: words must have this suffix
 
+- name: containsonly
+  paramLabel: ContainsOnly
+  type: java.lang.String
+  processorType: CONTAINSONLY
+  description: words are only made up of characters in the input string
+
