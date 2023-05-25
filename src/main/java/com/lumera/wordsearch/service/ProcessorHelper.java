@@ -13,9 +13,13 @@ import com.lumera.wordsearch.processor.MaxLengthProcessor;
 import com.lumera.wordsearch.processor.MinLengthProcessor;
 import com.lumera.wordsearch.processor.Processor;
 import com.lumera.wordsearch.processor.StartsWithProcessor;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import javax.annotation.CheckForNull;
 import lombok.experimental.UtilityClass;
 import org.apache.log4j.BasicConfigurator;
@@ -94,5 +98,24 @@ public class ProcessorHelper {
                 .get(cmdOptionConfig.getProcessorType())
                 .setOptionValue(optionValue)
         ));
+  }
+
+  public static List<String> searchWord(String word,
+      List<CmdOptionConfig> matchedCmdOptionConfigs) {
+
+    if (matchedCmdOptionConfigs.isEmpty()) {
+      return Collections.singletonList(word);
+    }
+
+    final Set<String> matchedElements = new HashSet<>(
+        ProcessorHelper.processorTypeMap.get(matchedCmdOptionConfigs.get(0).getProcessorType())
+            .search(word));
+
+    for (int i = 1; i < matchedCmdOptionConfigs.size(); i++) {
+      matchedElements.retainAll(
+          ProcessorHelper.processorTypeMap.get(matchedCmdOptionConfigs.get(i).getProcessorType())
+              .search(word));
+    }
+    return new ArrayList<>(matchedElements);
   }
 }

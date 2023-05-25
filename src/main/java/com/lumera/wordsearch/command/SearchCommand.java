@@ -6,9 +6,7 @@ import com.lumera.wordsearch.service.ProcessorHelper;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
@@ -46,7 +44,8 @@ public final class SearchCommand {
       while (sc.hasNextLine()) {
         final String line = sc.nextLine();
         if (line != null) {
-          final List<String> matchedWords = searchWord(line.trim(), matchedCmdOptionConfigs);
+          final List<String> matchedWords = ProcessorHelper.searchWord(line.trim(),
+              matchedCmdOptionConfigs);
           matchingWords.addAll(matchedWords);
         }
       }
@@ -61,23 +60,6 @@ public final class SearchCommand {
     return 1;
   }
 
-  private static List<String> searchWord(String word,
-      List<CmdOptionConfig> matchedCmdOptionConfigs) {
 
-    if (matchedCmdOptionConfigs.isEmpty()) {
-      return Collections.singletonList(word);
-    }
-
-    final Set<String> matchedElements = new HashSet<>(
-        ProcessorHelper.processorTypeMap.get(matchedCmdOptionConfigs.get(0).getProcessorType())
-            .search(word));
-
-    for (int i = 1; i < matchedCmdOptionConfigs.size(); i++) {
-      matchedElements.retainAll(
-          ProcessorHelper.processorTypeMap.get(matchedCmdOptionConfigs.get(i).getProcessorType())
-              .search(word));
-    }
-    return new ArrayList<>(matchedElements);
-  }
 }
 

@@ -52,6 +52,8 @@ dependencies {
 
     //testing
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.0")
+    // https://mvnrepository.com/artifact/org.mockito/mockito-core
+    testImplementation("org.mockito:mockito-core:5.3.0")
 }
 
 tasks.named<Test>("test") {
