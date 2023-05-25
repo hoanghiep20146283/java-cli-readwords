@@ -23,7 +23,7 @@ public class EndsWithProcessorTest {
 
 
     // Call the method under test
-    List<String> result = processor.search("James");
+    final List<String> result = processor.search("James");
 
     // Check the result
     Assertions.assertEquals(1, result.size());
@@ -36,7 +36,7 @@ public class EndsWithProcessorTest {
     processor.setOptionValue("James");
 
     // Call the method under test
-    List<String> result = processor.search("word");
+    final List<String> result = processor.search("word");
 
     // Check the result
     Assertions.assertTrue(result.isEmpty());
@@ -48,7 +48,7 @@ public class EndsWithProcessorTest {
     processor.setOptionValue("test");
 
     // Call the method under test
-    List<String> result = processor.search(null);
+    final List<String> result = processor.search(null);
 
     // Check the result
     Assertions.assertTrue(result.isEmpty());
