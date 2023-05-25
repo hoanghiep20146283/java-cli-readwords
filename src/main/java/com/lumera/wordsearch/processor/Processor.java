@@ -1,6 +1,12 @@
 package com.lumera.wordsearch.processor;
 
-public interface Processor<T> {
+public abstract class Processor<T> {
 
-  boolean search(T argument, String word);
+  protected T optionValue;
+
+  public void setOptionValue(T optionValue) {
+    this.optionValue = optionValue;
+  }
+
+  abstract public boolean search(String word);
 }

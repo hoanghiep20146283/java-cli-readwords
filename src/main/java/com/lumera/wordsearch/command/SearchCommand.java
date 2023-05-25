@@ -14,12 +14,14 @@ import com.lumera.wordsearch.processor.StartsWithProcessor;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.annotation.CheckForNull;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -56,36 +58,46 @@ public class SearchCommand {
 
     // implement the search logic
     // Read thourgh input file
+    setOptions(parseResult);
+    List<String> matchedOptionNames = parseResult.matchedOptions().stream()
+        .flatMap(optionSpec -> Arrays.stream(optionSpec.names())).collect(Collectors.toList());
+    List<CmdOptionConfig> matchedCmdOptionConfigs = WordSearchApplication.xmlConfig.getCmdOptionConfigs()
+        .stream().filter(cmdOptionConfig -> matchedOptionNames.contains(cmdOptionConfig.getName()))
+        .collect(Collectors.toList());
+
     String inputFileName = parseResult.matchedOptionValue("file", "wordlist.txt");
 
     try (FileInputStream inputStream = new FileInputStream(inputFileName); Scanner sc = new Scanner(
         inputStream, StandardCharsets.UTF_8)) {
       while (sc.hasNextLine()) {
         String line = sc.nextLine();
-        if (line != null && searchWord(parseResult, line.trim())) {
+        if (line != null && searchWord(line.trim(), matchedCmdOptionConfigs)) {
           matchingWords.add(line.trim());
         }
       }
-      System.out.print("Matching words: " + matchingWords.size());
+      System.out.println("Matching words: " + matchingWords.size());
     } catch (IOException ex) {
       throw new FileInputInvalidException(ex);
     }
     return 1;
   }
 
-  private static boolean searchWord(ParseResult parseResult, String word) {
+  private static boolean searchWord(String word, List<CmdOptionConfig> matchedCmdOptionConfigs) {
+    return matchedCmdOptionConfigs.stream().allMatch(
+        cmdOptionConfig -> processorTypeMap.get(cmdOptionConfig.getProcessorType()).search(word));
+  }
+
+  private static void setOptions(ParseResult parseResult) {
     List<CmdOptionConfig> cmdOptionConfigs = WordSearchApplication.xmlConfig.getCmdOptionConfigs();
-    return cmdOptionConfigs.stream().allMatch(cmdOptionConfig ->
-        Optional.ofNullable(
-                parseResult.matchedOptionValue(cmdOptionConfig.getName(),
-                    getProcessorDefaultValue(cmdOptionConfig.getProcessorType(),
-                        defaultValueMap.get(cmdOptionConfig.getProcessorType()))))
-            .map(option ->
-                processorTypeMap
-                    .get(cmdOptionConfig.getProcessorType())
-                    .search(option, word)
-            ).orElse(true)
-    );
+    cmdOptionConfigs.forEach(cmdOptionConfig -> Optional.ofNullable(
+            parseResult.matchedOptionValue(cmdOptionConfig.getName(),
+                getProcessorDefaultValue(cmdOptionConfig.getProcessorType(),
+                    defaultValueMap.get(cmdOptionConfig.getProcessorType()))))
+        .ifPresent(optionValue ->
+            processorTypeMap
+                .get(cmdOptionConfig.getProcessorType())
+                .setOptionValue(optionValue)
+        ));
   }
 
   /**

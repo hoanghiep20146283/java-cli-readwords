@@ -1,9 +1,9 @@
 package com.lumera.wordsearch.processor;
 
-public class MaxLengthProcessor implements Processor<Long> {
+public class MaxLengthProcessor extends Processor<Long> {
 
   @Override
-  public boolean search(Long maxLength, String word) {
-    return word != null && word.length() <= maxLength;
+  public boolean search(String word) {
+    return word != null && word.length() <= optionValue;
   }
 }

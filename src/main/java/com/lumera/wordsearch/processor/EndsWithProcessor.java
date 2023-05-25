@@ -1,9 +1,9 @@
 package com.lumera.wordsearch.processor;
 
-public class EndsWithProcessor implements Processor<String> {
+public class EndsWithProcessor extends Processor<String> {
 
   @Override
-  public boolean search(String prefix, String word) {
-    return word != null && word.endsWith(prefix);
+  public boolean search(String word) {
+    return word != null && word.endsWith(optionValue);
   }
 }

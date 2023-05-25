@@ -1,9 +1,9 @@
 package com.lumera.wordsearch.processor;
 
-public class StartsWithProcessor implements Processor<String> {
+public class StartsWithProcessor extends Processor<String> {
 
   @Override
-  public boolean search(String prefix, String word) {
-    return word != null && word.startsWith(prefix);
+  public boolean search(String word) {
+    return word != null && word.startsWith(optionValue);
   }
 }
