@@ -108,12 +108,12 @@ public class ProcessorHelper {
     }
 
     final Set<String> matchedElements = new HashSet<>(
-        ProcessorHelper.processorTypeMap.get(matchedCmdOptionConfigs.get(0).getProcessorType())
+        processorTypeMap.get(matchedCmdOptionConfigs.get(0).getProcessorType())
             .search(word));
 
     for (int i = 1; i < matchedCmdOptionConfigs.size(); i++) {
       matchedElements.retainAll(
-          ProcessorHelper.processorTypeMap.get(matchedCmdOptionConfigs.get(i).getProcessorType())
+          processorTypeMap.get(matchedCmdOptionConfigs.get(i).getProcessorType())
               .search(word));
     }
     return new ArrayList<>(matchedElements);
