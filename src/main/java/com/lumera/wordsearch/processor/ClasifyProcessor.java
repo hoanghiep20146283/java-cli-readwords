@@ -56,6 +56,37 @@ public class ClasifyProcessor extends Processor<WordClassOptions> {
     };
   }
 
+  /**
+   * Check if the word is spelled backwards from another word in the list
+   *
+   * @param word         the word read from input file.
+   * @param matchedWords words were matched from the input file.
+   *                     <p> Solution: <br>
+   *                     Creates an empty HashSet to store the matched words. Iterate over each
+   *                     input word. Invert the current word and check if this reversed word exists
+   *                     in the HashSet. If exists, then the current element and its inverse are a
+   *                     matched pair. Insert these two elements into {@code matchedWords}
+   *                     </p>
+   *                     <p> If it doesn't exist, add the current element to the
+   *                     {@code filteredWord} state. Then, continue traversing the next element.
+   *                     Returns a list of matching element pairs.
+   *                     </p>
+   *                     <p>
+   *                     The time complexity is O(n) because we only traverse each element once and
+   *                     perform constant operations on each element.
+   *                     </p>
+   *                     <p>
+   *                     The space complexity is O(n) because the solution uses a HashSet to store
+   *                     the traversed elements and a matching words to store matching pairs of
+   *                     elements.
+   *                     </p>
+   *                     <p> The worst case occurs when no elements are reversed, and in
+   *                     that case both the HashSet and the matching words need to store all the
+   *                     elements in the input words.
+   *                     </p>
+   * @return {@code List<String>} list of words is Semordnilap - word that spells a different word
+   * backwards (a different word from the list)
+   */
   private void processSemordnilapWord(String word, HashSet<String> matchedWords) {
     final String reversedWord = new StringBuilder(word).reverse().toString();
     if (filteredWord.contains(reversedWord)) {
