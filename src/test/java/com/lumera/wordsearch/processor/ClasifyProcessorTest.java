@@ -3,7 +3,6 @@ package com.lumera.wordsearch.processor;
 import com.lumera.wordsearch.constant.WordClass;
 import com.lumera.wordsearch.constant.WordClassOptions;
 import java.util.Collections;
-import java.util.function.Predicate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +25,7 @@ public class ClasifyProcessorTest {
   @Test
   public void search_WithIsogramWord_ReturnsSingletonList() {
     processor.setOptionValue(new WordClassOptions(Collections.singletonList(WordClass.isogram)));
-    List<String> result = processor.search("isogram");
+    final List<String> result = processor.search("isogram");
 
     Assertions.assertEquals(1, result.size());
     Assertions.assertEquals("isogram", result.get(0));
@@ -39,7 +38,7 @@ public class ClasifyProcessorTest {
   @Test
   public void search_WithPalindromeWord_ReturnsSingletonList() {
     processor.setOptionValue(new WordClassOptions(Collections.singletonList(WordClass.palindrome)));
-    List<String> result = processor.search("aabbaa");
+    final List<String> result = processor.search("aabbaa");
 
     // The expected behavior is that the word "isogram" should match WordClass.isogram
     // so the result should be an empty list.
@@ -55,8 +54,8 @@ public class ClasifyProcessorTest {
   public void search_WithSemordnilapWord_ReturnsListWith2Elements() {
     processor.setOptionValue(
         new WordClassOptions(Collections.singletonList(WordClass.semordnilap)));
-    List<String> firstResult = processor.search("test");
-    List<String> secondResult = processor.search("tset");
+    final List<String> firstResult = processor.search("test");
+    final List<String> secondResult = processor.search("tset");
 
     Assertions.assertTrue(firstResult.isEmpty());
 
@@ -74,9 +73,9 @@ public class ClasifyProcessorTest {
   public void search_MixSemordnilapWord_WithPalindromeWord_ReturnsListWithMultipleElements() {
     processor.setOptionValue(
         new WordClassOptions(Arrays.asList(WordClass.semordnilap, WordClass.palindrome)));
-    List<String> firstResult = processor.search("test");
-    List<String> secondResult = processor.search("tset");
-    List<String> lastResult = processor.search("assa");
+    final List<String> firstResult = processor.search("test");
+    final List<String> secondResult = processor.search("tset");
+    final List<String> lastResult = processor.search("assa");
 
     Assertions.assertTrue(firstResult.isEmpty());
 
@@ -93,10 +92,10 @@ public class ClasifyProcessorTest {
     processor.setOptionValue(
         new WordClassOptions(
             Arrays.asList(WordClass.isogram, WordClass.semordnilap, WordClass.palindrome)));
-    List<String> firstResult = processor.search("test");
-    List<String> secondResult = processor.search("tset");
-    List<String> thirdResult = processor.search("third");
-    List<String> lastResult = processor.search("level");
+    final List<String> firstResult = processor.search("test");
+    final List<String> secondResult = processor.search("tset");
+    final List<String> thirdResult = processor.search("third");
+    final List<String> lastResult = processor.search("level");
 
     Assertions.assertTrue(firstResult.isEmpty());
 
@@ -116,7 +115,7 @@ public class ClasifyProcessorTest {
     processor.setOptionValue(
         new WordClassOptions(
             Arrays.asList(WordClass.isogram, WordClass.semordnilap, WordClass.palindrome)));
-    List<String> firstResult = processor.search("tesst");
+    final List<String> firstResult = processor.search("tesst");
 
     Assertions.assertTrue(firstResult.isEmpty());
   }
