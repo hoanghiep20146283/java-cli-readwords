@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
@@ -26,11 +27,6 @@ public final class SearchCommand {
 
   public static int run(ParseResult parseResult) {
     final Set<String> matchingWords = new HashSet<>();
-    //Handle errors occurs while processing the help request
-    final Integer helpExitCode = CommandLine.executeHelpRequest(parseResult);
-    if (helpExitCode != null) {
-      return helpExitCode;
-    }
 
     // implement the search logic
 
@@ -66,6 +62,10 @@ public final class SearchCommand {
 
   private static List<String> searchWord(String word,
       List<CmdOptionConfig> matchedCmdOptionConfigs) {
+
+    if (matchedCmdOptionConfigs.isEmpty()) {
+      return Collections.singletonList(word);
+    }
 
     final Set<String> matchedElements = new HashSet<>(
         ProcessorHelper.processorTypeMap.get(matchedCmdOptionConfigs.get(0).getProcessorType())
