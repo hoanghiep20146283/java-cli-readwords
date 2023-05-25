@@ -35,7 +35,7 @@ public class ClasifyProcessor extends Processor<WordClassOptions> {
     return wordClass -> {
       switch (wordClass) {
         case isogram: {
-          if (hasDuplicateCharacters(word)) {
+          if (!hasDuplicateCharacters(word)) {
             matchedWords.add(word);
           }
           break;
