@@ -18,20 +18,20 @@ public class MaxLengthProcessorTest extends TestCase {
 
   @Test
   public void testSearch_WordWithLengthLessThanOrEqualOptionValue_ReturnsListWithWord() {
-    // Prepare the data
+    // Prepare optional arguments
     processor.setOptionValue(5L);
 
     // Call the method under test
-    final List<String> result = processor.search("hello");
+    final List<String> result = processor.search("hi");
 
     // Check the result
     Assertions.assertEquals(1, result.size());
-    Assertions.assertEquals("hello", result.get(0));
+    Assertions.assertEquals("hi", result.get(0));
   }
 
   @Test
   public void testSearch_WordWithLengthGreaterThanOptionValue_ReturnsEmptyList() {
-    // Prepare the data
+    // Prepare optional arguments
     processor.setOptionValue(5L);
 
     // Call the method under test
@@ -43,8 +43,8 @@ public class MaxLengthProcessorTest extends TestCase {
 
   @Test
   public void testSearch_NullWord_ReturnsEmptyList() {
-    // Prepare the data
-    processor.setOptionValue(5L);
+    // Prepare optional arguments
+    processor.setOptionValue(10L);
 
     // Call the method under test
     final List<String> result = processor.search(null);

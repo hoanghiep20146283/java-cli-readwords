@@ -18,26 +18,24 @@ public class MinLengthProcessorTest extends TestCase {
 
   @Test
   public void testSearch_WordWithLengthEqualOptionValue_ReturnsListWithWord() {
-    // Prepare the test data
-    final String word = "hello";
-    final long optionValue = 5;
-    processor.setOptionValue(optionValue);
+    // Prepare optional arguments
+    processor.setOptionValue(10L);
 
     // Call the method under test
-    final List<String> result = processor.search(word);
+    final List<String> result = processor.search("Hello Anna");
 
     // Verify the result
     Assertions.assertEquals(1, result.size());
-    Assertions.assertEquals(word, result.get(0));
+    Assertions.assertEquals("Hello Anna", result.get(0));
   }
 
   @Test
   public void testSearch_WordWithLengthLessThanOptionValue_ReturnsEmptyList() {
-    // Prepare the test data
-    processor.setOptionValue(5L);
+    // Prepare optional arguments
+    processor.setOptionValue(10L);
 
     // Call the method under test
-    final List<String> result = processor.search("hi");
+    final List<String> result = processor.search("Lumera");
 
     // Verify the result
     Assertions.assertTrue(result.isEmpty());
