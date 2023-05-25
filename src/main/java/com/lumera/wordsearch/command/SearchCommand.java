@@ -32,12 +32,12 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.ParseResult;
 
 @Command(name = "search", version = "1.0.0", description = "Searching for matching words", mixinStandardHelpOptions = true, header = "Search command", optionListHeading = "%nOptions are: %n")
-public class SearchCommand {
+public final class SearchCommand {
 
-  public static EnumMap<ProcessorType, Processor> processorTypeMap = new EnumMap<>(
+  public static final EnumMap<ProcessorType, Processor> processorTypeMap = new EnumMap<>(
       ProcessorType.class);
 
-  public static EnumMap<ProcessorType, Class> defaultValueMap = new EnumMap<>(
+  public static final EnumMap<ProcessorType, Class> defaultValueMap = new EnumMap<>(
       ProcessorType.class);
 
   static {
@@ -56,10 +56,13 @@ public class SearchCommand {
     defaultValueMap.put(ProcessorType.CLASS, WordClass.class);
   }
 
+  private SearchCommand() {
+  }
+
   public static int run(ParseResult parseResult) {
-    Set<String> matchingWords = new HashSet<>();
+    final Set<String> matchingWords = new HashSet<>();
     //Handle errors occurs while processing the help request
-    Integer helpExitCode = CommandLine.executeHelpRequest(parseResult);
+    final Integer helpExitCode = CommandLine.executeHelpRequest(parseResult);
     if (helpExitCode != null) {
       return helpExitCode;
     }
@@ -68,21 +71,21 @@ public class SearchCommand {
 
     // Read Options from command line
     setOptions(parseResult);
-    List<String> matchedOptionNames = parseResult.matchedOptions().stream()
+    final List<String> matchedOptionNames = parseResult.matchedOptions().stream()
         .flatMap(optionSpec -> Arrays.stream(optionSpec.names())).collect(Collectors.toList());
-    List<CmdOptionConfig> matchedCmdOptionConfigs = WordSearchApplication.xmlConfig.getCmdOptionConfigs()
+    final List<CmdOptionConfig> matchedCmdOptionConfigs = WordSearchApplication.xmlConfig.getCmdOptionConfigs()
         .stream().filter(cmdOptionConfig -> matchedOptionNames.contains(cmdOptionConfig.getName()))
         .collect(Collectors.toList());
 
     // Read thourgh input file
-    String inputFileName = parseResult.matchedOptionValue("file", "wordlist.txt");
+    final String inputFileName = parseResult.matchedOptionValue("file", "wordlist.txt");
 
     try (FileInputStream inputStream = new FileInputStream(inputFileName); Scanner sc = new Scanner(
         inputStream, StandardCharsets.UTF_8)) {
       while (sc.hasNextLine()) {
-        String line = sc.nextLine();
+        final String line = sc.nextLine();
         if (line != null) {
-          List<String> matchedWords = searchWord(line.trim(), matchedCmdOptionConfigs);
+          final List<String> matchedWords = searchWord(line.trim(), matchedCmdOptionConfigs);
           matchingWords.addAll(matchedWords);
         }
       }
@@ -99,7 +102,7 @@ public class SearchCommand {
   private static List<String> searchWord(String word,
       List<CmdOptionConfig> matchedCmdOptionConfigs) {
 
-    Set<String> matchedElements = new HashSet<>(
+    final Set<String> matchedElements = new HashSet<>(
         processorTypeMap.get(matchedCmdOptionConfigs.get(0).getProcessorType()).search(word));
 
     for (int i = 1; i < matchedCmdOptionConfigs.size(); i++) {
@@ -110,7 +113,7 @@ public class SearchCommand {
   }
 
   private static void setOptions(ParseResult parseResult) {
-    List<CmdOptionConfig> cmdOptionConfigs = WordSearchApplication.xmlConfig.getCmdOptionConfigs();
+    final List<CmdOptionConfig> cmdOptionConfigs = WordSearchApplication.xmlConfig.getCmdOptionConfigs();
     cmdOptionConfigs.forEach(cmdOptionConfig -> Optional.ofNullable(
             parseResult.matchedOptionValue(cmdOptionConfig.getName(),
                 getProcessorDefaultValue(cmdOptionConfig.getProcessorType(),
@@ -125,11 +128,11 @@ public class SearchCommand {
   /**
    * Returns the default value of {@code type} as defined by JLS --- <br>
    * {@code 0x7fffffffffffffffL (Long.MAX_VALUE)} for
-   * {@link com.lumera.wordsearch.processor.MaxLengthProcessor MaxLengthProcessor} <br> {@code 0L}
-   * for {@link com.lumera.wordsearch.processor.MinLengthProcessor MinLengthProcessor} <br>
-   * {@code false} for {@link  java.lang.Boolean Boolean} <br> {@code empty } for
-   * {@link com.lumera.wordsearch.processor.StartsWithProcessor StartsWithProcessor} and
-   * {@link com.lumera.wordsearch.processor.EndsWithProcessor EndsWithProcessor} <br> For other
+   * {@link MaxLengthProcessor MaxLengthProcessor} <br> {@code 0L}
+   * for {@link MinLengthProcessor MinLengthProcessor} <br>
+   * {@code false} for {@link  Boolean Boolean} <br> {@code empty } for
+   * {@link StartsWithProcessor StartsWithProcessor} and
+   * {@link EndsWithProcessor EndsWithProcessor} <br> For other
    * types and {@code void}, {@code null} is returned.
    */
   @SuppressWarnings("unchecked")
@@ -138,17 +141,21 @@ public class SearchCommand {
     checkNotNull(type);
     if (type == Boolean.class) {
       return (T) Boolean.FALSE;
-    } else if (type == Integer.class) {
+    }
+    if (type == Integer.class) {
       return (T) Integer.valueOf(0);
-    } else if (type == Long.class) {
+    }
+    if (type == Long.class) {
       if (processorType == ProcessorType.MAXLENGTH) {
         return (T) Long.valueOf(Long.MAX_VALUE);
       } else {
         return (T) Long.valueOf(0L);
       }
-    } else if (type == String.class) {
+    }
+    if (type == String.class) {
       return (T) "";
-    } else if (type == WordClass.class) {
+    }
+    if (type == WordClass.class) {
       return (T) WordClass.all;
     }
     return null;
