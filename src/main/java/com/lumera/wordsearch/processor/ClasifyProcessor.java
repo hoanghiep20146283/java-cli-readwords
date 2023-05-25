@@ -84,8 +84,6 @@ public class ClasifyProcessor extends Processor<WordClassOptions> {
    *                     that case both the HashSet and the matching words need to store all the
    *                     elements in the input words.
    *                     </p>
-   * @return {@code List<String>} list of words is Semordnilap - word that spells a different word
-   * backwards (a different word from the list)
    */
   private void processSemordnilapWord(String word, HashSet<String> matchedWords) {
     final String reversedWord = new StringBuilder(word).reverse().toString();

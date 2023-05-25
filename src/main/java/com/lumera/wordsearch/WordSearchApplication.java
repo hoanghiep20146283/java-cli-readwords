@@ -15,7 +15,6 @@ import picocli.CommandLine.IExecutionExceptionHandler;
 import picocli.CommandLine.ITypeConverter;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Model.OptionSpec;
-import picocli.CommandLine.ParameterException;
 
 /**
  * Entry point of application.

@@ -1,6 +1,5 @@
 package com.lumera.wordsearch.service;
 
-import java.util.function.Predicate;
 import picocli.CommandLine;
 import picocli.CommandLine.IExecutionExceptionHandler;
 import picocli.CommandLine.ParseResult;
@@ -18,6 +17,7 @@ import picocli.CommandLine.ParseResult;
  */
 public class PrintExceptionMessageHandler implements IExecutionExceptionHandler {
 
+  @Override
   public int handleExecutionException(Exception ex,
       CommandLine cmd,
       ParseResult parseResult) {

@@ -12,6 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class XmlConfig implements Serializable {
 
+  private static final long serialVersionUID = -2876047373968338587L;
   private List<CmdOptionConfig> cmdOptionConfigs;
 
   @Getter
@@ -19,6 +20,7 @@ public class XmlConfig implements Serializable {
   @NoArgsConstructor
   public static class CmdOptionConfig implements Serializable {
 
+    private static final long serialVersionUID = -2905574804235011603L;
     private String name;
     private String paramLabel;
     private String description;

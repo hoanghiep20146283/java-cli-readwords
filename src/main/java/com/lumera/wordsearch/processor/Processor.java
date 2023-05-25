@@ -10,5 +10,5 @@ public abstract class Processor<T> {
     this.optionValue = optionValue;
   }
 
-  abstract public List<String> search(String word);
+  public abstract List<String> search(String word);
 }
