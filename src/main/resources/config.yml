@@ -16,3 +16,16 @@ cmdOptionConfigs:
   type: java.lang.Long
   processorType: MINLENGTH
   description: Min length of the words
+
+- name: startswith
+  paramLabel: StartsWith
+  type: java.lang.String
+  processorType: STARTSWITH
+  description: words must have this prefix
+
+- name: endswith
+  paramLabel: EndsWith
+  type: java.lang.String
+  processorType: ENDSWITH
+  description: words must have this suffix
+

@@ -6,6 +6,7 @@ import com.lumera.wordsearch.WordSearchApplication;
 import com.lumera.wordsearch.config.XmlConfig.CmdOptionConfig;
 import com.lumera.wordsearch.constant.ProcessorType;
 import com.lumera.wordsearch.exception.FileInputInvalidException;
+import com.lumera.wordsearch.processor.EndsWithProcessor;
 import com.lumera.wordsearch.processor.MaxLengthProcessor;
 import com.lumera.wordsearch.processor.MinLengthProcessor;
 import com.lumera.wordsearch.processor.Processor;
@@ -38,9 +39,11 @@ public class SearchCommand {
     processorTypeMap.put(ProcessorType.MAXLENGTH, new MaxLengthProcessor());
     processorTypeMap.put(ProcessorType.MINLENGTH, new MinLengthProcessor());
     processorTypeMap.put(ProcessorType.STARTSWITH, new StartsWithProcessor());
+    processorTypeMap.put(ProcessorType.ENDSWITH, new EndsWithProcessor());
     defaultValueMap.put(ProcessorType.MAXLENGTH, Long.class);
     defaultValueMap.put(ProcessorType.MINLENGTH, Long.class);
     defaultValueMap.put(ProcessorType.STARTSWITH, String.class);
+    defaultValueMap.put(ProcessorType.ENDSWITH, String.class);
   }
 
   public static int run(ParseResult parseResult) {
@@ -115,3 +118,4 @@ public class SearchCommand {
     return null;
   }
 }
+
