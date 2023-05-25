@@ -32,9 +32,12 @@ public final class SearchCommand {
     ProcessorHelper.setOptions(parseResult);
     final List<String> matchedOptionNames = parseResult.matchedOptions().stream()
         .flatMap(optionSpec -> Arrays.stream(optionSpec.names())).collect(Collectors.toList());
-    final List<CmdOptionConfig> matchedCmdOptionConfigs = WordSearchApplication.xmlConfig.getCmdOptionConfigs()
-        .stream().filter(cmdOptionConfig -> matchedOptionNames.contains(cmdOptionConfig.getName()))
-        .collect(Collectors.toList());
+    final List<CmdOptionConfig> matchedCmdOptionConfigs =
+        WordSearchApplication.xmlConfig
+            .getCmdOptionConfigs()
+            .stream()
+            .filter(cmdOptionConfig -> matchedOptionNames.contains(cmdOptionConfig.getName()))
+            .collect(Collectors.toList());
 
     // Read thourgh input file
     final String inputFileName = parseResult.matchedOptionValue("file", "wordlist.txt");
