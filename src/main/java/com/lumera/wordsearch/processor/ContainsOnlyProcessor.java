@@ -1,6 +1,8 @@
 package com.lumera.wordsearch.processor;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ContainsOnlyProcessor extends Processor<String> {
@@ -16,7 +18,7 @@ public class ContainsOnlyProcessor extends Processor<String> {
   }
 
   @Override
-  public boolean search(String word) {
+  public List<String> search(String word) {
     boolean isMatch = true;
     for (char c : word.toCharArray()) {
       if (!inputChars.contains(c)) {
@@ -24,6 +26,6 @@ public class ContainsOnlyProcessor extends Processor<String> {
         break;
       }
     }
-    return isMatch;
+    return isMatch ? Collections.singletonList(word) : Collections.emptyList();
   }
 }

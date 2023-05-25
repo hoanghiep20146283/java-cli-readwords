@@ -1,5 +1,7 @@
 package com.lumera.wordsearch.processor;
 
+import java.util.List;
+
 public abstract class Processor<T> {
 
   protected T optionValue;
@@ -8,5 +10,5 @@ public abstract class Processor<T> {
     this.optionValue = optionValue;
   }
 
-  abstract public boolean search(String word);
+  abstract public List<String> search(String word);
 }

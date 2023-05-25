@@ -17,6 +17,7 @@ import com.lumera.wordsearch.processor.StartsWithProcessor;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashSet;
@@ -78,8 +79,9 @@ public class SearchCommand {
         inputStream, StandardCharsets.UTF_8)) {
       while (sc.hasNextLine()) {
         String line = sc.nextLine();
-        if (line != null && searchWord(line.trim(), matchedCmdOptionConfigs)) {
-          matchingWords.add(line.trim());
+        if (line != null) {
+          List<String> matchedWords = searchWord(line.trim(), matchedCmdOptionConfigs);
+          matchingWords.addAll(matchedWords);
         }
       }
       System.out.println("Matching words: " + matchingWords.size());
@@ -90,9 +92,17 @@ public class SearchCommand {
     return 1;
   }
 
-  private static boolean searchWord(String word, List<CmdOptionConfig> matchedCmdOptionConfigs) {
-    return matchedCmdOptionConfigs.stream().allMatch(
-        cmdOptionConfig -> processorTypeMap.get(cmdOptionConfig.getProcessorType()).search(word));
+  private static List<String> searchWord(String word,
+      List<CmdOptionConfig> matchedCmdOptionConfigs) {
+
+    Set<String> matchedElements = new HashSet<>(
+        processorTypeMap.get(matchedCmdOptionConfigs.get(0).getProcessorType()).search(word));
+
+    for (int i = 1; i < matchedCmdOptionConfigs.size(); i++) {
+      matchedElements.retainAll(
+          processorTypeMap.get(matchedCmdOptionConfigs.get(i).getProcessorType()).search(word));
+    }
+    return new ArrayList<>(matchedElements);
   }
 
   private static void setOptions(ParseResult parseResult) {

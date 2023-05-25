@@ -1,7 +1,9 @@
 package com.lumera.wordsearch.processor;
 
 import com.lumera.wordsearch.constant.WordClassOptions;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -18,31 +20,37 @@ public class ClasifyProcessor extends Processor<WordClassOptions> {
    * parameter, otherwise {@code false}
    */
   @Override
-  public boolean search(String word) {
-    return optionValue.getWordClasss()
-        .stream()
-        .anyMatch(wordClass -> {
+  public List<String> search(String word) {
+    HashSet<String> matchedWords = new HashSet<>();
+    optionValue.getWordClasss()
+        .forEach(wordClass -> {
           switch (wordClass) {
             case isogram: {
-              return hasDuplicateCharacters(word);
+              if (hasDuplicateCharacters(word)) {
+                matchedWords.add(word);
+              }
             }
             case palindrome: {
-              return isPalindrome(word);
+              if (isPalindrome(word)) {
+                matchedWords.add(word);
+              }
             }
             case semordnilap: {
               String reversedWord = new StringBuilder(word).reverse().toString();
               if (filteredWord.contains(reversedWord)) {
                 filteredWord.add(word);
-                return true;
+                matchedWords.add(word);
+                matchedWords.add(reversedWord);
               } else {
                 filteredWord.add(word);
-                return false;
+                matchedWords.add(word);
               }
             }
             default:
-              return true;
+              matchedWords.add(word);
           }
         });
+    return new ArrayList<>(matchedWords);
   }
 
 
