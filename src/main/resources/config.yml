@@ -40,3 +40,4 @@ cmdOptionConfigs:
   type: com.lumera.wordsearch.constant.WordClass
   processorType: CLASS
   description: Class of word
+  converterType: com.lumera.wordsearch.service.WordClassConverter

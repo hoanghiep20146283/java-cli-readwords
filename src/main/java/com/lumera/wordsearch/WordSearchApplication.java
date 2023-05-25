@@ -5,9 +5,11 @@ import com.lumera.wordsearch.config.XmlConfig;
 import com.lumera.wordsearch.config.XmlConfig.CmdOptionConfig;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 import picocli.CommandLine;
+import picocli.CommandLine.ITypeConverter;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Model.OptionSpec;
 
@@ -15,6 +17,7 @@ import picocli.CommandLine.Model.OptionSpec;
  * Entry point of application.
  */
 public class WordSearchApplication {
+
   public static XmlConfig xmlConfig;
 
   public static void main(String[] args) {
@@ -27,12 +30,17 @@ public class WordSearchApplication {
       spec.mixinStandardHelpOptions(true);
 
       for (CmdOptionConfig cmdOptionConfig : xmlConfig.getCmdOptionConfigs()) {
-        spec.addOption(
-            OptionSpec.builder(cmdOptionConfig.getName())
-                .paramLabel(cmdOptionConfig.getParamLabel())
-                .type(Class.forName(cmdOptionConfig.getType()))
-                .description(cmdOptionConfig.getDescription())
-                .build());
+        OptionSpec.Builder optionSpecBuilder = OptionSpec.builder(cmdOptionConfig.getName())
+
+            .paramLabel(cmdOptionConfig.getParamLabel())
+            .type(Class.forName(cmdOptionConfig.getType()))
+            .description(cmdOptionConfig.getDescription());
+        if (cmdOptionConfig.getConverterType() != null) {
+          optionSpecBuilder.converters(
+              (ITypeConverter<?>) Class.forName(cmdOptionConfig.getConverterType())
+                  .getDeclaredConstructors()[0].newInstance());
+        }
+        spec.addOption(optionSpecBuilder.build());
       }
 
       CommandLine commandLine = new CommandLine(spec);
@@ -41,7 +49,8 @@ public class WordSearchApplication {
       commandLine.setExecutionStrategy(SearchCommand::run);
       int exitCode = commandLine.execute(args);
       System.exit(exitCode);
-    } catch (ClassNotFoundException | IOException ex) {
+    } catch (ClassNotFoundException | IOException | InstantiationException |
+             IllegalAccessException | InvocationTargetException ex) {
       ex.printStackTrace();
     }
   }
