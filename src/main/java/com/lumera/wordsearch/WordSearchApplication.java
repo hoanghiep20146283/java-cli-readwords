@@ -35,8 +35,6 @@ public final class WordSearchApplication {
 
   public static XmlConfig xmlConfig;
 
-  public static CommandLine commandLine;
-
   public static void main(String[] args) {
     try (InputStream inputStream = WordSearchApplication.class.getClassLoader()
         .getResourceAsStream("config.yml")) {
@@ -60,7 +58,7 @@ public final class WordSearchApplication {
         spec.addOption(optionSpecBuilder.build());
       }
 
-      commandLine = new CommandLine(spec);
+      final CommandLine commandLine = new CommandLine(spec);
 
       // set an execution strategy (the run(ParseResult) method) that will be called
       // by CommandLine.execute(args) when user input was valid
