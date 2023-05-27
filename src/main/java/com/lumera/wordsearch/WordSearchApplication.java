@@ -58,6 +58,12 @@ public final class WordSearchApplication {
         spec.addOption(optionSpecBuilder.build());
       }
 
+      spec.addOption(OptionSpec.builder("file")
+          .paramLabel("File input name")
+          .type(String.class)
+          .description("File input name")
+          .build());
+
       final CommandLine commandLine = new CommandLine(spec);
 
       // set an execution strategy (the run(ParseResult) method) that will be called
