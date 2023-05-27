@@ -19,7 +19,7 @@ public class ClasifyProcessor extends Processor<WordClassOptions> {
    * So combine the classifications using: {@link  java.util.stream.Stream#anyMatch(Predicate)}
    *
    * @param word the word read from input file.
-   * @return {@code true} if the word belongs to one of the word classifications listed in the input
+   * startrn {@code true} if the word belongs to one of the word classifications listed in the input
    * parameter, otherwise {@code false}
    */
   @Override
