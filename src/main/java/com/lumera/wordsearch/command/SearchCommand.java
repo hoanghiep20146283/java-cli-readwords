@@ -72,15 +72,14 @@ public final class SearchCommand {
       System.out.println("Number of matching words: " + matchingWords.size());
       System.out.print("Matching words: ");
       int i = 0;
-      for(String matchinWord: matchingWords) {
-        if(i == matchingWords.size() - 1) {
+      for (String matchinWord : matchingWords) {
+        if (i == matchingWords.size() - 1) {
           System.out.println(matchinWord);
         } else {
           System.out.print(matchinWord + ", ");
         }
         i++;
       }
-      throw new FileInputInvalidException("Test", null);
     } catch (IOException ioException) {
       WordSearchApplication.commandLine.printVersionHelp(System.out);
       throw new ExecutionException(WordSearchApplication.commandLine,
@@ -89,7 +88,7 @@ public final class SearchCommand {
       throw new ExecutionException(WordSearchApplication.commandLine,
           "Unknown Exception (" + "command: search" + "): " + exception, exception);
     }
-//    return ExitCode.SUCCESS.getExitCode();
+    return ExitCode.SUCCESS.getExitCode();
   }
 }
 
