@@ -2,6 +2,7 @@ package com.lumera.wordsearch.command;
 
 import com.lumera.wordsearch.WordSearchApplication;
 import com.lumera.wordsearch.config.XmlConfig.CmdOptionConfig;
+import com.lumera.wordsearch.constant.ExitCode;
 import com.lumera.wordsearch.processor.ClasifyProcessor;
 import com.lumera.wordsearch.processor.ContainsOnlyProcessor;
 import com.lumera.wordsearch.processor.EndsWithProcessor;
@@ -23,8 +24,9 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.ParseResult;
 
 /**
- * This class apply Strategy Design Pattern: allows SearchCommand to define a different set of {@link com.lumera.wordsearch.processor.Processor}
- * and encapsulate their processing logic into separate classes. These algorithms and {@link com.lumera.wordsearch.processor.Processor} can
+ * This class apply Strategy Design Pattern: allows SearchCommand to define a different set of
+ * {@link com.lumera.wordsearch.processor.Processor} and encapsulate their processing logic into
+ * separate classes. These algorithms and {@link com.lumera.wordsearch.processor.Processor} can
  * change their behavior dynamically during runtime and can be used interchangeably and in
  * combination without affecting interaction with other objects.
  *
@@ -57,7 +59,8 @@ public final class SearchCommand {
     // Read thourgh input file
     final String inputFileName = parseResult.matchedOptionValue("file", "wordlist.txt");
 
-    try (FileInputStream inputStream = new FileInputStream(inputFileName); Scanner sc = new Scanner(
+    try (FileInputStream inputStream = new FileInputStream(
+        inputFileName); Scanner sc = new Scanner(
         inputStream, StandardCharsets.UTF_8)) {
       while (sc.hasNextLine()) {
         final String line = sc.nextLine();
@@ -75,9 +78,7 @@ public final class SearchCommand {
       System.out.println("Error when reading input file: " + ex.getMessage());
       log.error(ex.getMessage(), ex);
     }
-    return 1;
+    return ExitCode.SUCCESS.getExitCode();
   }
-
-
 }
 
