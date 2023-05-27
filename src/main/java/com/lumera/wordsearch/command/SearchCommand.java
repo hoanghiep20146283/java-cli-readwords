@@ -79,13 +79,15 @@ public final class SearchCommand {
         i++;
       }
     } catch (IOException ioException) {
+      log.error(ioException.getMessage(), ioException);
       parseResult.commandSpec().commandLine().printVersionHelp(System.out);
       throw new ExecutionException(parseResult.commandSpec().commandLine(),
           "Error Reading input file (" + "command: search" + "): " + ioException, ioException);
-    } catch (Exception exception) {
+    } catch (Exception ex) {
+      log.error(ex.getMessage(), ex);
       parseResult.commandSpec().commandLine().printVersionHelp(System.out);
       throw new ExecutionException(parseResult.commandSpec().commandLine(),
-          "Unknown Exception (" + "command: search" + "): " + exception, exception);
+          "Unknown Exception (" + "command: search" + "): " + ex, ex);
     }
     return ExitCode.SUCCESS.getExitCode();
   }

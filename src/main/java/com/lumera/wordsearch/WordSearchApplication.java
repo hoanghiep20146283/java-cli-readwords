@@ -81,9 +81,9 @@ public final class WordSearchApplication {
       log.error(typeException.getMessage(), typeException);
       System.out.println(
           "ProcessorType or Option Data Type is misconfigured: " + typeException.getMessage());
-    } catch (Exception exception) {
-      log.error(exception.getMessage(), exception);
-      System.out.println("Unknown exception: " + exception.getMessage());
+    } catch (Exception ex) {
+      log.error(ex.getMessage(), ex);
+      System.out.println("Unknown ex: " + ex.getMessage());
     }
     System.exit(ExitCode.FAILURE.getExitCode());
   }
