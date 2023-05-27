@@ -17,12 +17,16 @@ import picocli.CommandLine.ParseResult;
  */
 public class PrintExceptionMessageHandler implements IExecutionExceptionHandler {
 
+  /**
+   * Bold red error message <br>
+   * Print to the console error messages, not the entire stack trace
+   */
   @Override
   public int handleExecutionException(Exception ex,
       CommandLine cmd,
       ParseResult parseResult) {
 
-    // bold red error message
+
     cmd.getErr().println(cmd.getColorScheme().errorText(ex.getMessage()));
 
     return cmd.getExitCodeExceptionMapper() != null

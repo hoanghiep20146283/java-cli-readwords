@@ -18,15 +18,6 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.ExecutionException;
 import picocli.CommandLine.ParseResult;
 
-/**
- * This class apply Strategy Design Pattern: allows SearchCommand to define a different set of
- * {@link com.lumera.wordsearch.processor.Processor} and encapsulate their processing logic into
- * separate classes. These algorithms and {@link com.lumera.wordsearch.processor.Processor} can
- * change their behavior dynamically during runtime and can be used interchangeably and in
- * combination without affecting interaction with other objects.
- *
- * @author James Hoang
- */
 @Slf4j
 @Command(name = "search", version = "1.0.0", description = "Searching for matching words", mixinStandardHelpOptions = true, header = "Search command", optionListHeading = "%nOptions are: %n")
 public final class SearchCommand {

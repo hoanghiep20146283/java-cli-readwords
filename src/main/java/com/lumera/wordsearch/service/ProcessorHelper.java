@@ -25,6 +25,14 @@ import lombok.experimental.UtilityClass;
 import org.apache.log4j.BasicConfigurator;
 import picocli.CommandLine.ParseResult;
 
+/**
+ * This class apply Strategy Design Pattern: allows SearchCommand to define a different set of
+ * {@link Processor} and encapsulate their processing logic into separate classes. These algorithms
+ * and {@link Processor} can change their behavior dynamically during runtime and can be used
+ * interchangeably and in combination without affecting interaction with other objects.
+ *
+ * @author James Hoang
+ */
 @UtilityClass
 public class ProcessorHelper {
 
