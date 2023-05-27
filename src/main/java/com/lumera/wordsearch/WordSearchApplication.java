@@ -3,6 +3,7 @@ package com.lumera.wordsearch;
 import com.lumera.wordsearch.command.SearchCommand;
 import com.lumera.wordsearch.config.XmlConfig;
 import com.lumera.wordsearch.config.XmlConfig.CmdOptionConfig;
+import com.lumera.wordsearch.constant.ExitCode;
 import com.lumera.wordsearch.service.PrintExceptionMessageHandler;
 import java.io.IOException;
 import java.io.InputStream;
@@ -80,5 +81,6 @@ public final class WordSearchApplication {
       log.error(exception.getMessage(), exception);
       System.out.println("Unknown exception: " + exception.getMessage());
     }
+    System.exit(ExitCode.FAILURE.getExitCode());
   }
 }
