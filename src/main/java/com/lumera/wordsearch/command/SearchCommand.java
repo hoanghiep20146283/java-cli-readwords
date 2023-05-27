@@ -3,10 +3,12 @@ package com.lumera.wordsearch.command;
 import com.lumera.wordsearch.WordSearchApplication;
 import com.lumera.wordsearch.config.XmlConfig.CmdOptionConfig;
 import com.lumera.wordsearch.constant.ExitCode;
+import com.lumera.wordsearch.processor.ClasifyProcessor;
 import com.lumera.wordsearch.service.ProcessorHelper;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -53,6 +55,7 @@ public final class SearchCommand {
 
     // Read thourgh input file
     final String inputFileName = parseResult.matchedOptionValue("file", "wordlist.txt");
+    List<String> allWord = new ArrayList<>();
 
     try (FileInputStream inputStream = new FileInputStream(
         inputFileName); Scanner sc = new Scanner(
@@ -60,18 +63,19 @@ public final class SearchCommand {
       while (sc.hasNextLine()) {
         final String line = sc.nextLine();
         if (line != null) {
-          final List<String> matchedWords = ProcessorHelper.searchWord(line.trim(),
-              matchedCmdOptionConfigs);
-          matchingWords.addAll(matchedWords);
+          allWord.add(line.trim());
         }
       }
 
+      ClasifyProcessor clasifyProcessor = new ClasifyProcessor();
+      List<String> matchedWords = clasifyProcessor.search(allWord);
+
       // Print out the result
-      System.out.println("Number of matching words: " + matchingWords.size());
+      System.out.println("Number of matching words: " + matchedWords.size());
       System.out.print("Matching words: ");
       int i = 0;
-      for (String matchinWord : matchingWords) {
-        if (i == matchingWords.size() - 1) {
+      for (String matchinWord : matchedWords) {
+        if (i == matchedWords.size() - 1) {
           System.out.println(matchinWord);
         } else {
           System.out.print(matchinWord + ", ");

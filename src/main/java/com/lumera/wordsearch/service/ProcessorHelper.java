@@ -51,7 +51,6 @@ public class ProcessorHelper {
     processorTypeMap.put(ProcessorType.STARTSWITH, new StartsWithProcessor());
     processorTypeMap.put(ProcessorType.ENDSWITH, new EndsWithProcessor());
     processorTypeMap.put(ProcessorType.CONTAINSONLY, new ContainsOnlyProcessor());
-    processorTypeMap.put(ProcessorType.CLASS, new ClasifyProcessor());
     defaultValueMap.put(ProcessorType.MAXLENGTH, Long.class);
     defaultValueMap.put(ProcessorType.MINLENGTH, Long.class);
     defaultValueMap.put(ProcessorType.STARTSWITH, String.class);
@@ -96,20 +95,12 @@ public class ProcessorHelper {
   }
 
   public static void setOptions(ParseResult parseResult) {
-    final List<CmdOptionConfig> cmdOptionConfigs = WordSearchApplication.xmlConfig.getCmdOptionConfigs();
-    cmdOptionConfigs.forEach(cmdOptionConfig -> Optional.ofNullable(
-            parseResult.matchedOptionValue(cmdOptionConfig.getName(),
-                getProcessorDefaultValue(cmdOptionConfig.getProcessorType(),
-                    defaultValueMap.get(cmdOptionConfig.getProcessorType()))))
-        .ifPresent(optionValue ->
-            processorTypeMap
-                .get(cmdOptionConfig.getProcessorType())
-                .setOptionValue(optionValue)
-        ));
+
   }
 
   public static List<String> searchWord(String word,
       List<CmdOptionConfig> matchedCmdOptionConfigs) {
+
 
     if (matchedCmdOptionConfigs.isEmpty()) {
       return Collections.singletonList(word);
