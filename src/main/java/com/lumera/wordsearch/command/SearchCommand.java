@@ -37,7 +37,9 @@ public final class SearchCommand {
   /**
    * @return {@link ExitCode#SUCCESS} if the command completes execution without any problems,
    * otherwise it returns {@link ExitCode#FAILURE}
-   * @throws ExecutionException if problem occurs while calling search command
+   * @throws ExecutionException if problem occurs while calling search command, which will be
+   *                            handled by
+   *                            {@link com.lumera.wordsearch.service.PrintExceptionMessageHandler}
    * @author James Hoang
    * @see ExitCode {@code classArgument}, otherwise {@code false}
    * @see ExecutionException
