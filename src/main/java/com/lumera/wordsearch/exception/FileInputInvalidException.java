@@ -2,7 +2,7 @@ package com.lumera.wordsearch.exception;
 
 public class FileInputInvalidException extends RuntimeException {
 
-  public FileInputInvalidException(Throwable cause) {
-    super(cause);
+  public FileInputInvalidException(String message, Throwable cause) {
+    super(message, cause);
   }
 }

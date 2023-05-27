@@ -3,6 +3,7 @@ package com.lumera.wordsearch.command;
 import com.lumera.wordsearch.WordSearchApplication;
 import com.lumera.wordsearch.config.XmlConfig.CmdOptionConfig;
 import com.lumera.wordsearch.constant.ExitCode;
+import com.lumera.wordsearch.exception.FileInputInvalidException;
 import com.lumera.wordsearch.service.ProcessorHelper;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.w3c.dom.ls.LSOutput;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.ExecutionException;
 import picocli.CommandLine.ParseResult;
@@ -52,7 +54,7 @@ public final class SearchCommand {
             .collect(Collectors.toList());
 
     // Read thourgh input file
-    final String inputFileName = parseResult.matchedOptionValue("file", "wordlist1.txt");
+    final String inputFileName = parseResult.matchedOptionValue("file", "wordlist.txt");
 
     try (FileInputStream inputStream = new FileInputStream(
         inputFileName); Scanner sc = new Scanner(
@@ -67,13 +69,27 @@ public final class SearchCommand {
       }
 
       // Print out the result
-      System.out.println("Matching words: " + matchingWords.size());
+      System.out.println("Number of matching words: " + matchingWords.size());
+      System.out.print("Matching words: ");
+      int i = 0;
+      for(String matchinWord: matchingWords) {
+        if(i == matchingWords.size() - 1) {
+          System.out.println(matchinWord);
+        } else {
+          System.out.print(matchinWord + ", ");
+        }
+        i++;
+      }
+      throw new FileInputInvalidException("Test", null);
     } catch (IOException ioException) {
       WordSearchApplication.commandLine.printVersionHelp(System.out);
       throw new ExecutionException(WordSearchApplication.commandLine,
-          "Error Reading input file (" + "search" + "): " + ioException, ioException);
+          "Error Reading input file (" + "command: search" + "): " + ioException, ioException);
+    } catch (Exception exception) {
+      throw new ExecutionException(WordSearchApplication.commandLine,
+          "Unknown Exception (" + "command: search" + "): " + exception, exception);
     }
-    return ExitCode.SUCCESS.getExitCode();
+//    return ExitCode.SUCCESS.getExitCode();
   }
 }
 
