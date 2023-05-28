@@ -5,6 +5,9 @@ import com.lumera.wordsearch.config.XmlConfig;
 import com.lumera.wordsearch.config.XmlConfig.CmdOptionConfig;
 import com.lumera.wordsearch.constant.ExitCode;
 import com.lumera.wordsearch.service.PrintExceptionMessageHandler;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -33,9 +36,14 @@ import picocli.CommandLine.Model.OptionSpec;
 @Slf4j
 public final class WordSearchApplication {
 
+  private static final MeterRegistry registry = new SimpleMeterRegistry();
+  private static final Timer cpuUsageTimer = Timer.builder("cpu.usage")
+      .description("CPU usage timer")
+      .register(registry);
   public static XmlConfig xmlConfig;
 
   public static void main(String[] args) {
+    Timer.Sample cpuUsageSample = Timer.start(registry);
     try (InputStream inputStream = WordSearchApplication.class.getClassLoader()
         .getResourceAsStream("config.yml")) {
       final Yaml yaml = new Yaml(new Constructor(XmlConfig.class));
@@ -72,6 +80,8 @@ public final class WordSearchApplication {
 
       commandLine.setExecutionExceptionHandler(new PrintExceptionMessageHandler());
       final int exitCode = commandLine.execute(args);
+      cpuUsageSample.stop(cpuUsageTimer);
+      registry.forEachMeter(meter -> log.info(meter.getId() + ": " + meter.measure()));
       System.exit(exitCode);
       // Exception handling: Print to the console error messages, not the entire stack trace
     } catch (IOException | InstantiationException | IllegalAccessException ex) {
