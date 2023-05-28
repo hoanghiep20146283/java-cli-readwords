@@ -4,6 +4,7 @@
 #  type: Long
 #  description: Max length of the words
 #  class: com.lumera.wordsearch.processor.MaxLengthProcessor
+combineProcessorType: AND
 cmdOptionConfigs:
 - name: maxlength
   paramLabel: MaxLength

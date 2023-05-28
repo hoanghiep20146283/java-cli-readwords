@@ -4,11 +4,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.lumera.wordsearch.WordSearchApplication;
 import com.lumera.wordsearch.config.XmlConfig.CmdOptionConfig;
+import com.lumera.wordsearch.constant.CombineProcessorType;
 import com.lumera.wordsearch.constant.ProcessorType;
 import com.lumera.wordsearch.constant.WordClass;
 import com.lumera.wordsearch.constant.WordClassOptions;
 import com.lumera.wordsearch.exception.ProcessorException;
+import com.lumera.wordsearch.processor.AndCombineProcessor;
 import com.lumera.wordsearch.processor.ClasifyProcessor;
+import com.lumera.wordsearch.processor.CombineProcessor;
 import com.lumera.wordsearch.processor.ContainsOnlyProcessor;
 import com.lumera.wordsearch.processor.EndsWithProcessor;
 import com.lumera.wordsearch.processor.MaxLengthProcessor;
@@ -38,6 +41,9 @@ import picocli.CommandLine.ParseResult;
 @UtilityClass
 public class ProcessorHelper {
 
+  public static final EnumMap<CombineProcessorType, CombineProcessor> combineProcessorTypeMap = new EnumMap<>(
+      CombineProcessorType.class);
+
   public static final EnumMap<ProcessorType, Processor> processorTypeMap = new EnumMap<>(
       ProcessorType.class);
 
@@ -48,6 +54,7 @@ public class ProcessorHelper {
     // Log4j config
     BasicConfigurator.configure();
     // add processors to map (prototype pattern)
+    combineProcessorTypeMap.put(CombineProcessorType.AND, new AndCombineProcessor());
     processorTypeMap.put(ProcessorType.MAXLENGTH, new MaxLengthProcessor());
     processorTypeMap.put(ProcessorType.MINLENGTH, new MinLengthProcessor());
     processorTypeMap.put(ProcessorType.STARTSWITH, new StartsWithProcessor());

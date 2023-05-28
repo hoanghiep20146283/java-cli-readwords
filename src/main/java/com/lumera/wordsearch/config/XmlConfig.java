@@ -1,5 +1,6 @@
 package com.lumera.wordsearch.config;
 
+import com.lumera.wordsearch.constant.CombineProcessorType;
 import com.lumera.wordsearch.constant.ProcessorType;
 import java.io.Serializable;
 import java.util.List;
@@ -14,6 +15,7 @@ public class XmlConfig implements Serializable {
 
   private static final long serialVersionUID = -2876047373968338587L;
   private List<CmdOptionConfig> cmdOptionConfigs;
+  private CombineProcessorType combineProcessorType;
 
   @Getter
   @Setter

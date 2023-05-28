@@ -62,8 +62,9 @@ public final class SearchCommand {
       while (sc.hasNextLine()) {
         final String line = sc.nextLine();
         if (line != null) {
-          final List<String> matchedWords = ProcessorHelper.searchWord(line.trim(),
-              matchedCmdOptionConfigs);
+          final List<String> matchedWords = ProcessorHelper.combineProcessorTypeMap.get(
+                  WordSearchApplication.xmlConfig.getCombineProcessorType())
+              .combine(line.trim(), matchedCmdOptionConfigs);
           matchingWords.addAll(matchedWords);
         }
       }
@@ -72,7 +73,7 @@ public final class SearchCommand {
       log.info("Number of matching words: " + matchingWords.size());
       log.info("Matching words: ");
       int i = 0;
-      StringBuilder allWordsMatched = new StringBuilder();
+      final StringBuilder allWordsMatched = new StringBuilder();
       for (String matchinWord : matchingWords) {
         if (i == matchingWords.size() - 1) {
           allWordsMatched.append(matchinWord);
