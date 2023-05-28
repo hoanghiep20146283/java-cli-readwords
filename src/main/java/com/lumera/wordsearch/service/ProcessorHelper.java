@@ -98,15 +98,16 @@ public class ProcessorHelper {
 
   public static void setOptions(ParseResult parseResult) {
     final List<CmdOptionConfig> cmdOptionConfigs = WordSearchApplication.xmlConfig.getCmdOptionConfigs();
-    cmdOptionConfigs.forEach(cmdOptionConfig -> Optional.ofNullable(
-            parseResult.matchedOptionValue(cmdOptionConfig.getName(),
-                getProcessorDefaultValue(cmdOptionConfig.getProcessorType(),
-                    defaultValueMap.get(cmdOptionConfig.getProcessorType()))))
-        .ifPresent(optionValue ->
-            processorTypeMap
-                .get(cmdOptionConfig.getProcessorType())
-                .setOptionValue(optionValue)
-        ));
+    cmdOptionConfigs.forEach(cmdOptionConfig ->
+        Optional.ofNullable(
+                parseResult.matchedOptionValue(cmdOptionConfig.getName(),
+                    getProcessorDefaultValue(cmdOptionConfig.getProcessorType(),
+                        defaultValueMap.get(cmdOptionConfig.getProcessorType()))))
+            .ifPresent(optionValue ->
+                processorTypeMap
+                    .get(cmdOptionConfig.getProcessorType())
+                    .setOptionValue(optionValue)
+            ));
   }
 
   public static List<String> searchWord(String word,
