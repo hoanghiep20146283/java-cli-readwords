@@ -5,11 +5,14 @@ When add a new rule and implement the logic of that new rule, follow these steps
 - Add new class extends abstract class `processor` and override methods (if necessary)
 - Update configs in `resources/config.yml` file
 - Update static mapping in `ProcessorHelper` class
+- Design patterns:
+  - Strategy pattern: [ProcessorHelper](src/main/java/com/lumera/wordsearch/service/ProcessorHelper.java)
+  - Bridge pattern: [SearchCommand](src/main/java/com/lumera/wordsearch/command/SearchCommand.java)
 
 ## Scripts
 
 - Generated in ${project.rootDir}/build/scripts
-- Example:  .\build\scripts\WordSearch class="{isogram""|"palindrome"}""" maxlength=100
+- Example command:  .\build\scripts\WordSearch class="{isogram""|"palindrome"}""" maxlength=100
 
 
 ## Logging 

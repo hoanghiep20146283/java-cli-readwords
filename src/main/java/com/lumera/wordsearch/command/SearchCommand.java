@@ -28,6 +28,13 @@ public final class SearchCommand {
   }
 
   /**
+   * This class applies  Bridge Design Pattern: define a
+   * {@link com.lumera.wordsearch.processor.CombineProcessor} at runtime to demonstrate logic
+   * between multiple processors multiple processor. Making 2 layer of abstractions:
+   * {@link com.lumera.wordsearch.processor.CombineProcessor} and {@link Processor} <br> Prefer
+   * composition to inheritance: it's easier to modify the logic of each processor as well as the
+   * logic that aggregates the final result between processors, at a later stage <br>
+   *
    * @return {@link ExitCode#SUCCESS} if the command completes execution without any problems,
    * otherwise it returns {@link ExitCode#FAILURE}
    * @throws ExecutionException if problem occurs while calling search command, which will be

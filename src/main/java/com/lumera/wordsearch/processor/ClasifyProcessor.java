@@ -29,6 +29,15 @@ public class ClasifyProcessor extends Processor<WordClassOptions> {
     return new ArrayList<>(matchedWords);
   }
 
+  /**
+   * Gets a string and current matches to check if the current word being searched is eligible to
+   * belong to the matching words
+   *
+   * @param word         the word input from wordlist.txt
+   * @param matchedWords Current matching words
+   * @return {@link Consumer<WordClass> } WordClass <br> Based on the wordClass value (taken from
+   * the internal state of the processor) to execute the corresponding logic
+   */
   @NotNull
   private Consumer<WordClass> processWordClass(String word, HashSet<String> matchedWords) {
     return wordClass -> {
