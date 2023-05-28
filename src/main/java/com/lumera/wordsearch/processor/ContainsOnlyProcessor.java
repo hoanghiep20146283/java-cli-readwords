@@ -32,4 +32,9 @@ public class ContainsOnlyProcessor extends Processor<String> {
     }
     return isMatch ? Collections.singletonList(word) : Collections.emptyList();
   }
+
+  @Override
+  public void reset() {
+    inputChars.clear();
+  }
 }

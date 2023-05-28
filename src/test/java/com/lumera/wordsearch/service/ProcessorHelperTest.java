@@ -161,7 +161,7 @@ public class ProcessorHelperTest {
   }
 
   @Test
-  public void search_byClassProcess_ReturnSingletonList() {
+  public void setOption_bySemordnilapClassProcess_resultSingletonList() {
     Mockito.when(cmdOptionConfig.getName()).thenReturn("test option");
     Mockito.when(cmdOptionConfig.getProcessorType()).thenReturn(ProcessorType.CLASS);
     Mockito.when(xmlConfig.getCmdOptionConfigs())
@@ -178,11 +178,57 @@ public class ProcessorHelperTest {
         .search("test");
     Assertions.assertTrue(firstResult.isEmpty());
 
-    final List<String> secondResult = ProcessorHelper.processorTypeMap.get(ProcessorType.CLASS)
+    final List<String> result = ProcessorHelper.processorTypeMap.get(ProcessorType.CLASS)
         .search("tset");
-    Assertions.assertEquals(2, secondResult.size());
-    Assertions.assertEquals("test", secondResult.get(0));
-    Assertions.assertEquals("tset", secondResult.get(1));
+    Assertions.assertEquals(2, result.size());
+    Assertions.assertEquals("test", result.get(0));
+    Assertions.assertEquals("tset", result.get(1));
+  }
+
+  @Test
+  public void setOption_bySemordnilapClassProcess_resultListWith2Elements() {
+    Mockito.when(cmdOptionConfig.getName()).thenReturn("test option");
+    Mockito.when(cmdOptionConfig.getProcessorType()).thenReturn(ProcessorType.CLASS);
+    Mockito.when(xmlConfig.getCmdOptionConfigs())
+        .thenReturn(Collections.singletonList(cmdOptionConfig));
+    WordSearchApplication.xmlConfig = xmlConfig;
+
+    Mockito.when(
+            parseResult.matchedOptionValue(ArgumentMatchers.anyString(), ArgumentMatchers.any()))
+        .thenReturn(new WordClassOptions(Collections.singletonList(WordClass.semordnilap)));
+
+    ProcessorHelper.setOptions(parseResult);
+
+    ProcessorHelper.processorTypeMap.get(ProcessorType.CLASS).search("test");
+
+    final List<String> result = ProcessorHelper.processorTypeMap.get(ProcessorType.CLASS)
+        .search("tset");
+    Assertions.assertEquals(2, result.size());
+    Assertions.assertEquals("test", result.get(0));
+    Assertions.assertEquals("tset", result.get(1));
+  }
+
+  @Test
+  public void setOption_searchWords_resultListWith2Elements() {
+    Mockito.when(cmdOptionConfig.getName()).thenReturn("test option");
+    Mockito.when(cmdOptionConfig.getProcessorType()).thenReturn(ProcessorType.CLASS);
+    Mockito.when(xmlConfig.getCmdOptionConfigs())
+        .thenReturn(Collections.singletonList(cmdOptionConfig));
+    WordSearchApplication.xmlConfig = xmlConfig;
+
+    Mockito.when(
+            parseResult.matchedOptionValue(ArgumentMatchers.anyString(), ArgumentMatchers.any()))
+        .thenReturn(new WordClassOptions(Collections.singletonList(WordClass.semordnilap)));
+
+    ProcessorHelper.setOptions(parseResult);
+
+    ProcessorHelper.searchWord("test", Collections.singletonList(cmdOptionConfig));
+
+    final List<String> result = ProcessorHelper.searchWord("tset",
+        Collections.singletonList(cmdOptionConfig));
+    Assertions.assertEquals(2, result.size());
+    Assertions.assertEquals("test", result.get(0));
+    Assertions.assertEquals("tset", result.get(1));
   }
 }
 

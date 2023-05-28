@@ -6,6 +6,7 @@ import com.lumera.wordsearch.WordSearchApplication;
 import com.lumera.wordsearch.config.XmlConfig.CmdOptionConfig;
 import com.lumera.wordsearch.constant.ProcessorType;
 import com.lumera.wordsearch.constant.WordClass;
+import com.lumera.wordsearch.exception.ProcessorException;
 import com.lumera.wordsearch.processor.ClasifyProcessor;
 import com.lumera.wordsearch.processor.ContainsOnlyProcessor;
 import com.lumera.wordsearch.processor.EndsWithProcessor;
@@ -111,19 +112,25 @@ public class ProcessorHelper {
   public static List<String> searchWord(String word,
       List<CmdOptionConfig> matchedCmdOptionConfigs) {
 
-    if (matchedCmdOptionConfigs.isEmpty()) {
-      return Collections.singletonList(word);
-    }
+    try {
+      if (matchedCmdOptionConfigs.isEmpty()) {
+        return Collections.singletonList(word);
+      }
 
-    final Set<String> matchedElements = new HashSet<>(
-        processorTypeMap.get(matchedCmdOptionConfigs.get(0).getProcessorType())
-            .search(word));
-
-    for (int i = 1; i < matchedCmdOptionConfigs.size(); i++) {
-      matchedElements.retainAll(
-          processorTypeMap.get(matchedCmdOptionConfigs.get(i).getProcessorType())
+      final Set<String> matchedElements = new HashSet<>(
+          processorTypeMap.get(matchedCmdOptionConfigs.get(0).getProcessorType())
               .search(word));
+
+      for (int i = 1; i < matchedCmdOptionConfigs.size(); i++) {
+        matchedElements.retainAll(
+            processorTypeMap.get(matchedCmdOptionConfigs.get(i).getProcessorType())
+                .search(word));
+      }
+      return new ArrayList<>(matchedElements);
+    } catch (Exception ex) {
+      throw new ProcessorException("Error Processing word: " + word, ex);
+    } finally {
+      processorTypeMap.values().forEach(Processor::reset);
     }
-    return new ArrayList<>(matchedElements);
   }
 }

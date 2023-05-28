@@ -18,9 +18,8 @@ public class ClasifyProcessor extends Processor<WordClassOptions> {
    * Check if the word belongs to one of the word classifications listed in the input parameter <br>
    * So combine the classifications using: {@link  java.util.stream.Stream#anyMatch(Predicate)}
    *
-   * @param word the word read from input file.
-   * startrn {@code true} if the word belongs to one of the word classifications listed in the input
-   * parameter, otherwise {@code false}
+   * @param word the word read from input file. startrn {@code true} if the word belongs to one of
+   *             the word classifications listed in the input parameter, otherwise {@code false}
    */
   @Override
   public List<String> search(String word) {
@@ -149,5 +148,10 @@ public class ClasifyProcessor extends Processor<WordClassOptions> {
   public boolean isPalindrome(String word) {
     final String reversedWord = new StringBuilder(word).reverse().toString();
     return word.equals(reversedWord);
+  }
+
+  @Override
+  public void reset() {
+    filteredWord.clear();
   }
 }

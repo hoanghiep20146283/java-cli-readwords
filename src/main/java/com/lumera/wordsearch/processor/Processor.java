@@ -33,4 +33,16 @@ public abstract class Processor<T> {
    * @param word the word input from wordlist.txt
    */
   public abstract List<String> search(String word);
+
+  /**
+   * Resets the {@code state} of this {@code processor} to initial, so that all cumulative output is
+   * present in processor's memory discarded. The state can then be reused, reuse and make the word
+   * search process idempotent.
+   *
+   * @see ClasifyProcessor#reset()
+   * @see ContainsOnlyProcessor#reset()
+   */
+  public void reset() {
+
+  }
 }

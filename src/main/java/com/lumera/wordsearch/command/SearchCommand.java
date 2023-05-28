@@ -3,6 +3,7 @@ package com.lumera.wordsearch.command;
 import com.lumera.wordsearch.WordSearchApplication;
 import com.lumera.wordsearch.config.XmlConfig.CmdOptionConfig;
 import com.lumera.wordsearch.constant.ExitCode;
+import com.lumera.wordsearch.exception.ProcessorException;
 import com.lumera.wordsearch.service.ProcessorHelper;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -83,6 +84,11 @@ public final class SearchCommand {
       parseResult.commandSpec().commandLine().printVersionHelp(System.out);
       throw new ExecutionException(parseResult.commandSpec().commandLine(),
           "Error Reading input file (" + "command: search" + "): " + ioException, ioException);
+    } catch (ProcessorException processorException) {
+      log.error(processorException.getMessage(), processorException);
+      parseResult.commandSpec().commandLine().printVersionHelp(System.out);
+      throw new ExecutionException(parseResult.commandSpec().commandLine(),
+          "ProcessorException Exception (" + "command: search" + "): " + processorException, processorException);
     } catch (Exception ex) {
       log.error(ex.getMessage(), ex);
       parseResult.commandSpec().commandLine().printVersionHelp(System.out);
