@@ -19,8 +19,8 @@ import picocli.CommandLine.ParseResult;
 public abstract class Processor<T> {
 
   /**
-   * The option value is dynamically parsed from the CLI. <br>
-   * Wil be set in {@link com.lumera.wordsearch.service.ProcessorHelper#setOptions(ParseResult)}
+   * The option value is dynamically parsed from the CLI. <br> Wil be set in
+   * {@link com.lumera.wordsearch.service.ProcessorHelper#setOptions(ParseResult)}
    */
   protected T optionValue;
 
@@ -35,8 +35,9 @@ public abstract class Processor<T> {
 
   /**
    * Takes a string and returns strings that satisfy the processor's condition
-   *
    * @param word the word input from wordlist.txt
+   * @return The list of matching words (also includes the word that is parsed and stored in the
+   * processor's internal state - affected by the word being searched)
    */
   public abstract List<String> search(String word);
 
