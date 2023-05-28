@@ -4,6 +4,7 @@ import com.lumera.wordsearch.WordSearchApplication;
 import com.lumera.wordsearch.config.XmlConfig.CmdOptionConfig;
 import com.lumera.wordsearch.constant.ExitCode;
 import com.lumera.wordsearch.exception.ProcessorException;
+import com.lumera.wordsearch.processor.Processor;
 import com.lumera.wordsearch.service.ProcessorHelper;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -88,12 +89,15 @@ public final class SearchCommand {
       log.error(processorException.getMessage(), processorException);
       parseResult.commandSpec().commandLine().printVersionHelp(System.out);
       throw new ExecutionException(parseResult.commandSpec().commandLine(),
-          "ProcessorException Exception (" + "command: search" + "): " + processorException, processorException);
+          "ProcessorException Exception (" + "command: search" + "): " + processorException,
+          processorException);
     } catch (Exception ex) {
       log.error(ex.getMessage(), ex);
       parseResult.commandSpec().commandLine().printVersionHelp(System.out);
       throw new ExecutionException(parseResult.commandSpec().commandLine(),
           "Unknown Exception (" + "command: search" + "): " + ex, ex);
+    } finally {
+      ProcessorHelper.processorTypeMap.values().forEach(Processor::reset);
     }
     return ExitCode.SUCCESS.getExitCode();
   }

@@ -129,8 +129,6 @@ public class ProcessorHelper {
       return new ArrayList<>(matchedElements);
     } catch (Exception ex) {
       throw new ProcessorException("Error Processing word: " + word, ex);
-    } finally {
-      processorTypeMap.values().forEach(Processor::reset);
     }
   }
 }
