@@ -101,12 +101,13 @@ public class ProcessorHelperTest {
   @Test
   public void getProcessorDefaultValue_WithWordClassType_ReturnsAllWordClass() {
     final ProcessorType processorType = ProcessorType.CLASS;
-    final Class<WordClass> type = WordClass.class;
+    final Class<WordClassOptions> type = WordClassOptions.class;
 
-    final WordClass result = ProcessorHelper.getProcessorDefaultValue(processorType, type);
+    final WordClassOptions result = ProcessorHelper.getProcessorDefaultValue(processorType, type);
 
     // The expected behavior is that when the type is WordClass, the method should return WordClass.all.
-    Assertions.assertEquals(WordClass.all, result);
+    Assertions.assertEquals(1, result.getWordClasss().size());
+    Assertions.assertEquals(WordClass.all, result.getWordClasss().get(0));
   }
 
   @Test
