@@ -1,11 +1,13 @@
 package com.lumera.wordsearch.processor;
 
 import java.util.List;
+import picocli.CommandLine.ParseResult;
 
 /**
  * This abstract class is the superclass of all processors has the role of searching for keywords
  * that satisfy a certain condition (arguments input from cli, words input from wordlist.txt file)
  *
+ * @param <T> the type of optionValue used for processor's logic
  * @author James Hoang
  * @see ContainsOnlyProcessor
  * @see ClasifyProcessor
@@ -16,6 +18,10 @@ import java.util.List;
  */
 public abstract class Processor<T> {
 
+  /**
+   * The option value is dynamically parsed from the CLI. <br>
+   * Wil be set in {@link com.lumera.wordsearch.service.ProcessorHelper#setOptions(ParseResult)}
+   */
   protected T optionValue;
 
   /**
@@ -43,6 +49,5 @@ public abstract class Processor<T> {
    * @see ContainsOnlyProcessor#reset()
    */
   public void reset() {
-
   }
 }

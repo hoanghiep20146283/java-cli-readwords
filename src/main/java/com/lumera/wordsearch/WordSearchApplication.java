@@ -48,7 +48,7 @@ public final class WordSearchApplication {
       for (CmdOptionConfig cmdOptionConfig : xmlConfig.getCmdOptionConfigs()) {
         final OptionSpec.Builder optionSpecBuilder = OptionSpec.builder(cmdOptionConfig.getName())
             .paramLabel(cmdOptionConfig.getParamLabel())
-            .type(Class.forName(cmdOptionConfig.getType()))
+            .type(Class.forName(cmdOptionConfig.getOptionValueType()))
             .description(cmdOptionConfig.getDescription());
         if (cmdOptionConfig.getConverterType() != null) {
           optionSpecBuilder.converters(

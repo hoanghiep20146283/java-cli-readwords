@@ -263,40 +263,69 @@ public class ProcessorHelperTest {
   }
 
   @Test
-  public void searchWords_bySemordnilapClassProcessAndMinLengthProcessor_resultListWith2Elements() {
+  public void searchWords_bySemordnilapClassProcessThenMinLengthProcessor_resultListWith2Elements() {
     Mockito.when(classCmdOptionConfig.getName()).thenReturn("test class option");
     Mockito.when(classCmdOptionConfig.getProcessorType()).thenReturn(ProcessorType.CLASS);
 
     Mockito.when(minLengthCmdOptionConfig.getName()).thenReturn("test minlength option");
     Mockito.when(minLengthCmdOptionConfig.getProcessorType()).thenReturn(ProcessorType.MINLENGTH);
 
-    Mockito.when(xmlConfig.getCmdOptionConfigs())
-        .thenReturn(Arrays.asList(classCmdOptionConfig, minLengthCmdOptionConfig));
+    final List<CmdOptionConfig> cmdOptionConfigs = Arrays.asList(classCmdOptionConfig,
+        minLengthCmdOptionConfig);
+
+    Mockito.when(xmlConfig.getCmdOptionConfigs()).thenReturn(cmdOptionConfigs);
+
     WordSearchApplication.xmlConfig = xmlConfig;
 
     Mockito.when(
             parseResult.matchedOptionValue(ArgumentMatchers.anyString(),
-                ArgumentMatchers.any(WordClass.class)))
-        .thenReturn(WordClass.semordnilap);
+                ArgumentMatchers.any(WordClassOptions.class)))
+        .thenReturn(new WordClassOptions(Collections.singletonList(WordClass.semordnilap)));
 
     Mockito.when(
             parseResult.matchedOptionValue(ArgumentMatchers.anyString(), ArgumentMatchers.anyLong()))
-        .thenReturn(5L);
+        .thenReturn(3L);
 
     ProcessorHelper.setOptions(parseResult);
 
-    final List<CmdOptionConfig> cmdOptionConfigs = Arrays.asList(classCmdOptionConfig,
-        minLengthCmdOptionConfig);
-
-    ProcessorHelper.searchWord("test", cmdOptionConfigs);
     ProcessorHelper.searchWord("abcdef", cmdOptionConfigs);
-    ProcessorHelper.searchWord("fedcba", cmdOptionConfigs);
 
-    final List<String> result = ProcessorHelper.searchWord("tset", cmdOptionConfigs);
+    final List<String> result = ProcessorHelper.searchWord("fedcba", cmdOptionConfigs);
     Assertions.assertEquals(2, result.size());
-    Assertions.assertEquals("test", result.get(0));
-    Assertions.assertEquals("tset", result.get(1));
+    Assertions.assertEquals("fedcba", result.get(0));
+    Assertions.assertEquals("abcdef", result.get(1));
   }
 
+  @Test
+  public void searchWords_byMinLengthProcessorThenSemordnilapClassProcess_resultListWith2Elements() {
+    Mockito.when(classCmdOptionConfig.getName()).thenReturn("test class option");
+    Mockito.when(classCmdOptionConfig.getProcessorType()).thenReturn(ProcessorType.CLASS);
+
+    Mockito.when(minLengthCmdOptionConfig.getName()).thenReturn("test minlength option");
+    Mockito.when(minLengthCmdOptionConfig.getProcessorType()).thenReturn(ProcessorType.MINLENGTH);
+
+    final List<CmdOptionConfig> cmdOptionConfigs = Arrays.asList(minLengthCmdOptionConfig, classCmdOptionConfig);
+
+    Mockito.when(xmlConfig.getCmdOptionConfigs()).thenReturn(cmdOptionConfigs);
+    WordSearchApplication.xmlConfig = xmlConfig;
+
+    Mockito.when(
+            parseResult.matchedOptionValue(ArgumentMatchers.anyString(),
+                ArgumentMatchers.any(WordClassOptions.class)))
+        .thenReturn(new WordClassOptions(Collections.singletonList(WordClass.semordnilap)));
+
+    Mockito.when(
+            parseResult.matchedOptionValue(ArgumentMatchers.anyString(), ArgumentMatchers.anyLong()))
+        .thenReturn(3L);
+
+    ProcessorHelper.setOptions(parseResult);
+
+    ProcessorHelper.searchWord("abcdef", cmdOptionConfigs);
+
+    final List<String> result = ProcessorHelper.searchWord("fedcba", cmdOptionConfigs);
+    Assertions.assertEquals(2, result.size());
+    Assertions.assertEquals("fedcba", result.get(0));
+    Assertions.assertEquals("abcdef", result.get(1));
+  }
 }
 

@@ -6,6 +6,7 @@ import com.lumera.wordsearch.WordSearchApplication;
 import com.lumera.wordsearch.config.XmlConfig.CmdOptionConfig;
 import com.lumera.wordsearch.constant.ProcessorType;
 import com.lumera.wordsearch.constant.WordClass;
+import com.lumera.wordsearch.constant.WordClassOptions;
 import com.lumera.wordsearch.exception.ProcessorException;
 import com.lumera.wordsearch.processor.ClasifyProcessor;
 import com.lumera.wordsearch.processor.ContainsOnlyProcessor;
@@ -58,7 +59,7 @@ public class ProcessorHelper {
     defaultValueMap.put(ProcessorType.STARTSWITH, String.class);
     defaultValueMap.put(ProcessorType.ENDSWITH, String.class);
     defaultValueMap.put(ProcessorType.CONTAINSONLY, String.class);
-    defaultValueMap.put(ProcessorType.CLASS, WordClass.class);
+    defaultValueMap.put(ProcessorType.CLASS, WordClassOptions.class);
   }
 
   /**
@@ -90,8 +91,8 @@ public class ProcessorHelper {
     if (type == String.class) {
       return (T) "";
     }
-    if (type == WordClass.class) {
-      return (T) WordClass.all;
+    if (type == WordClassOptions.class) {
+      return (T) new WordClassOptions(Collections.singletonList(WordClass.all));
     }
     return null;
   }
@@ -118,16 +119,21 @@ public class ProcessorHelper {
         return Collections.singletonList(word);
       }
 
-      final Set<String> matchedElements = new HashSet<>(
+      final Set<String> matchedWords = new HashSet<>(
           processorTypeMap.get(matchedCmdOptionConfigs.get(0).getProcessorType())
               .search(word));
 
       for (int i = 1; i < matchedCmdOptionConfigs.size(); i++) {
-        matchedElements.retainAll(
-            processorTypeMap.get(matchedCmdOptionConfigs.get(i).getProcessorType())
-                .search(word));
+        final Set<String> matchindWords = new HashSet<>();
+        for (String matchedWord : matchedWords) {
+          matchindWords.addAll(
+              processorTypeMap.get(matchedCmdOptionConfigs.get(i).getProcessorType())
+                  .search(matchedWord));
+        }
+        matchedWords.clear();
+        matchedWords.addAll(matchindWords);
       }
-      return new ArrayList<>(matchedElements);
+      return new ArrayList<>(matchedWords);
     } catch (Exception ex) {
       throw new ProcessorException("Error Processing word: " + word, ex);
     }

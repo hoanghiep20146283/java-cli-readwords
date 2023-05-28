@@ -24,7 +24,7 @@ public class XmlConfig implements Serializable {
     private String name;
     private String paramLabel;
     private String description;
-    private String type;
+    private String optionValueType;
     private ProcessorType processorType;
     private String converterType;
   }
