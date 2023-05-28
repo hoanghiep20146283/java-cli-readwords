@@ -69,20 +69,7 @@ public final class SearchCommand {
         }
       }
 
-      // Print out the result
-      log.info("Number of matching words: " + matchingWords.size());
-      log.info("Matching words: ");
-      int i = 0;
-      final StringBuilder allWordsMatched = new StringBuilder();
-      for (String matchinWord : matchingWords) {
-        if (i == matchingWords.size() - 1) {
-          allWordsMatched.append(matchinWord);
-        } else {
-          allWordsMatched.append(matchinWord + ", ");
-        }
-        i++;
-      }
-      log.info(allWordsMatched.toString());
+      ProcessorHelper.printResult(matchingWords);
     } catch (IOException ioException) {
       log.error(ioException.getMessage(), ioException);
       parseResult.commandSpec().commandLine().printVersionHelp(System.out);

@@ -27,6 +27,7 @@ import java.util.Optional;
 import java.util.Set;
 import javax.annotation.CheckForNull;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.BasicConfigurator;
 import picocli.CommandLine.ParseResult;
 
@@ -38,6 +39,7 @@ import picocli.CommandLine.ParseResult;
  *
  * @author James Hoang
  */
+@Slf4j
 @UtilityClass
 public class ProcessorHelper {
 
@@ -144,5 +146,22 @@ public class ProcessorHelper {
     } catch (Exception ex) {
       throw new ProcessorException("Error Processing word: " + word, ex);
     }
+  }
+
+  public static void printResult(Set<String> matchingWords) {
+    // Print out the result
+    log.info("Number of matching words: " + matchingWords.size());
+    log.info("Matching words: ");
+    int i = 0;
+    final StringBuilder allWordsMatched = new StringBuilder();
+    for (String matchinWord : matchingWords) {
+      if (i == matchingWords.size() - 1) {
+        allWordsMatched.append(matchinWord);
+      } else {
+        allWordsMatched.append(matchinWord + ", ");
+      }
+      i++;
+    }
+    log.info(allWordsMatched.toString());
   }
 }

@@ -8,6 +8,8 @@ import com.lumera.wordsearch.constant.WordClass;
 import com.lumera.wordsearch.constant.WordClassOptions;
 import com.lumera.wordsearch.processor.Processor;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -305,7 +307,8 @@ public class ProcessorHelperTest {
     Mockito.when(minLengthCmdOptionConfig.getName()).thenReturn("test minlength option");
     Mockito.when(minLengthCmdOptionConfig.getProcessorType()).thenReturn(ProcessorType.MINLENGTH);
 
-    final List<CmdOptionConfig> cmdOptionConfigs = Arrays.asList(minLengthCmdOptionConfig, classCmdOptionConfig);
+    final List<CmdOptionConfig> cmdOptionConfigs = Arrays.asList(minLengthCmdOptionConfig,
+        classCmdOptionConfig);
 
     Mockito.when(xmlConfig.getCmdOptionConfigs()).thenReturn(cmdOptionConfigs);
     WordSearchApplication.xmlConfig = xmlConfig;
@@ -327,6 +330,12 @@ public class ProcessorHelperTest {
     Assertions.assertEquals(2, result.size());
     Assertions.assertEquals("fedcba", result.get(0));
     Assertions.assertEquals("abcdef", result.get(1));
+  }
+
+  @Test
+  public void printResult_NoException() {
+    Assertions.assertDoesNotThrow(
+        () -> ProcessorHelper.printResult(new HashSet<>(Arrays.asList("a", "b", "c"))));
   }
 }
 

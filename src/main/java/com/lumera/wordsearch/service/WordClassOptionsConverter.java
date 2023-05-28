@@ -14,15 +14,14 @@ public class WordClassOptionsConverter implements ITypeConverter<WordClassOption
    * Validate and convert a string to an object containing a list of WordClasses
    *
    * @param classArgument Read from command line - represents the list containing the classes of
-   *                      word The list of classes listed in
-   *                      {@link  WordClass}
+   *                      word The list of classes listed in {@link  WordClass}
    * @return {@code true} if the word belongs to one of the classes listed in the list passed in the
    * {@code classArgument}, otherwise {@code false}
    * @throws TypeConversionException if {@code classArgument} format is invalid
    *                                 <p> When a
-   *                                 TypeConversionException is thrown, picocli will automatically handle and show an error
-   *                                 message that indicates the problematic option, followed by the
-   *                                 exception message text
+   *                                 TypeConversionException is thrown, picocli will automatically
+   *                                 handle and show an error message that indicates the problematic
+   *                                 option, followed by the exception message text
    *                                 </p>
    */
   @Override
@@ -33,7 +32,7 @@ public class WordClassOptionsConverter implements ITypeConverter<WordClassOption
       return new WordClassOptions(
           Arrays.stream(classArgument.substring(1, classArgument.length() - 1)
                   .split("\\|"))
-              .map(WordClass::valueOf)
+              .map(wordClassString -> WordClass.valueOf(wordClassString.trim()))
               .collect(Collectors.toList()));
     } else {
       throw new TypeConversionException(
