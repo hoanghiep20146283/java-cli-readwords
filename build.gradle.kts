@@ -7,6 +7,7 @@
 plugins {
     // Apply the Kotlin JVM plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm") version "1.3.61"
+    id("jacoco")
 
     // Apply the application plugin to add support for building a CLI application.
     application
@@ -91,4 +92,16 @@ tasks.register<Copy>("copyRuntimeLibs") {
 
 tasks.named("build") {
     finalizedBy("copyRuntimeLibs")
+}
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
+}
+tasks.jacocoTestReport {
+    dependsOn(tasks.test) // tests are required to run before generating the report
+    reports {
+        xml.required.set(false)
+        csv.required.set(false)
+        html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
+    }
 }

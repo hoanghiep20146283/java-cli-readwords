@@ -17,3 +17,8 @@ When add a new rule and implement the logic of that new rule, follow these steps
 - Generated log location: ${project.rootDir}/logs
 - Delete log files after `gradlew clean` task
  
+# Test & test coverage report
+
+- Generate by `gradlew test` or `gradlew jacocoTestReport` task
+- Test report location: [index.html](build/reports/tests/test/index.html)
+- Test coverage report location: [index.html](build/jacocoHtml/index.html)
