@@ -6,6 +6,8 @@ import com.lumera.wordsearch.config.XmlConfig.CmdOptionConfig;
 import com.lumera.wordsearch.constant.ProcessorType;
 import com.lumera.wordsearch.constant.WordClass;
 import com.lumera.wordsearch.constant.WordClassOptions;
+import com.lumera.wordsearch.processor.Processor;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +30,11 @@ public class ProcessorHelperTest {
     parseResult = Mockito.mock(ParseResult.class);
     xmlConfig = Mockito.mock(XmlConfig.class);
     cmdOptionConfig = Mockito.mock(CmdOptionConfig.class);
+  }
+
+  @AfterEach
+  public void tearDown() {
+    ProcessorHelper.processorTypeMap.values().forEach(Processor::reset);
   }
 
   @Test
